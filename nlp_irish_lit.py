@@ -4,7 +4,6 @@ from typing import List
 
 import tensorflow as tf
 from tensorflow import keras
-
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -55,11 +54,12 @@ def tokenize_corpus(corpus: List[str], padding: str) -> (Tokenizer, int, int, np
     return tokenizer, max_sequence_length, total_words, features, labels
 
 
-def get_model(total_words: int, max_sequence_length: int) -> keras.Sequential:
+def get_model(total_words: int, max_sequence_length: int,
+              output_dimensions: int, lstm_units: int) -> keras.Sequential:
 
     model = keras.Sequential([
-        keras.layers.Embedding(total_words, 64, input_length=max_sequence_length - 1),
-        keras.layers.Bidirectional(keras.layers.LSTM(20)),
+        keras.layers.Embedding(total_words, output_dimensions, input_length=max_sequence_length - 1),
+        keras.layers.Bidirectional(keras.layers.LSTM(lstm_units)),
         keras.layers.Dense(total_words, activation='softmax')
     ])
 
@@ -139,7 +139,9 @@ def main():
 
     # HYPER PARAMS
     hp_padding = 'pre'
-    hp_epochs = 250
+    hp_epochs = 100
+    hp_output_dimensions = 100
+    hp_lstm_units = 150
 
     # other params
     lyrics_dir = 'lyrics_files'
@@ -149,12 +151,16 @@ def main():
 
     # get text data
     corpus = []
-    add_file_to_corpus(os.path.join(lyrics_dir, 'communication-breakdown.txt'), corpus)
-    add_file_to_corpus(os.path.join(lyrics_dir, 'lanigans-ball.txt'), corpus)
+    add_file_to_corpus(os.path.join(lyrics_dir, 'irish-lyrics-eof.txt'), corpus)
 
     tokenizer, max_sequence_length, total_words, features, labels = tokenize_corpus(corpus, hp_padding)
 
-    model = get_model(max_sequence_length=max_sequence_length, total_words=total_words)
+    model = get_model(
+        max_sequence_length=max_sequence_length,
+        total_words=total_words,
+        output_dimensions=hp_output_dimensions,
+        lstm_units=hp_lstm_units
+    )
 
     stopwatch.start()
 
