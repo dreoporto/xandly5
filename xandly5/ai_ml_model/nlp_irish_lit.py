@@ -141,7 +141,7 @@ def main():
 
     # HYPER PARAMS
     hp_padding = 'pre'
-    hp_epochs = 100
+    hp_epochs = 150
     hp_output_dimensions = 100
     hp_lstm_units = 150
     hp_patience = 8
@@ -188,6 +188,8 @@ def main():
     )
 
     stopwatch.stop()
+
+    model.save('nlp_irish_lit.h5')
 
     dc.show_history_chart(history, 'accuracy')
     dc.show_history_chart(history, 'loss')

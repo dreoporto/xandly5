@@ -1,3 +1,7 @@
+
+# exclude h5 saved models - TODO AEO TEMP
+*.h5
+
 # excluding PyCharm settings
 .idea/
 
