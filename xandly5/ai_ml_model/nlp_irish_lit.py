@@ -7,6 +7,8 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+from sklearn.model_selection import train_test_split
+
 from dre_lib.dre_time import Stopwatch
 from dre_lib import dre_chartz as dc
 
@@ -142,18 +144,23 @@ def main():
     hp_epochs = 100
     hp_output_dimensions = 100
     hp_lstm_units = 150
+    hp_patience = 8
+    hp_min_delta = 0.001
 
     # other params
     lyrics_dir = 'lyrics_files'
     word_group_count = 4
     seed_text = 'andre went to dublin looking for a breakdown'
     words_to_generate = 100
+    random_state = 42
 
     # get text data
     corpus = []
     add_file_to_corpus(os.path.join(lyrics_dir, 'irish-lyrics-eof.txt'), corpus)
 
     tokenizer, max_sequence_length, total_words, features, labels = tokenize_corpus(corpus, hp_padding)
+
+    x_train, x_valid, y_train, y_valid = train_test_split(features, labels, test_size=0.3, random_state=random_state)
 
     model = get_model(
         max_sequence_length=max_sequence_length,
@@ -162,13 +169,22 @@ def main():
         lstm_units=hp_lstm_units
     )
 
+    early_stopping = keras.callbacks.EarlyStopping(
+        monitor='val_loss',
+        patience=hp_patience,
+        min_delta=hp_min_delta,
+        mode='min'
+    )
+
     stopwatch.start()
 
     history = model.fit(
         features,
         labels,
+        validation_data=(x_valid, y_valid),
         epochs=hp_epochs,
-        verbose=1
+        verbose=1,
+        callbacks=[early_stopping]
     )
 
     stopwatch.stop()
