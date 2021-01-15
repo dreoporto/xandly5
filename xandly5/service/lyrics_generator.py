@@ -34,13 +34,13 @@ def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModelWithInfo]:
 
 
 # load using global variable
+keras.backend.clear_session()
 _lyrics_models = _load_lyrics_models()
 
 
 class LyricsGenerator:
 
     _PADDING: str = 'pre'
-    keras.backend.clear_session()
 
     def __init__(self):
         print('init LyricsGenerator instance')
