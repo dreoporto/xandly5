@@ -52,7 +52,6 @@ def main():
     tensorflow_diagnostics()
 
     # HYPER PARAMS
-    hp_padding = 'pre'
     hp_epochs = 150
     hp_output_dimensions = 100
     hp_lstm_units = 150
@@ -68,7 +67,7 @@ def main():
 
     catalog = Catalog()
     catalog.add_file_to_catalog(os.path.join(lyrics_dir, 'irish-lyrics-eof.txt'))
-    catalog.tokenize_catalog(hp_padding)
+    catalog.tokenize_catalog()
 
     x_train, x_valid, y_train, y_valid = train_test_split(catalog.features, catalog.labels,
                                                           test_size=0.3, random_state=random_state)
@@ -109,7 +108,6 @@ def main():
     lyrics_text = catalog.generate_lyrics_text(
         model,
         seed_text=seed_text,
-        padding=hp_padding,
         word_count=words_to_generate,
         max_sequence_length=catalog.max_sequence_length
     )

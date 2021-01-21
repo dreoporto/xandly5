@@ -7,9 +7,6 @@ from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from dre_lib.dre_time import Stopwatch
 
-# TODO AEO refactor
-PADDING: str = 'pre'
-
 
 class LyricsModelEnum(IntEnum):
     IRISH_LIT = 1
@@ -35,7 +32,7 @@ def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModel]:
         lyrics_model.model = keras.models.load_model(f'../ai_ml_model/{lyrics_model.model_file}')
         lyrics_model.catalog = Catalog()
         lyrics_model.catalog.add_file_to_catalog(f'../ai_ml_model/lyrics_files/{lyrics_model.lyrics_file}')
-        lyrics_model.catalog.tokenize_catalog(PADDING)
+        lyrics_model.catalog.tokenize_catalog()
 
     return models
 
@@ -56,7 +53,6 @@ class LyricsGenerator:
         lyrics_text = self.model_with_info.catalog.generate_lyrics_text(
             self.model_with_info.model,
             seed_text=seed_text,
-            padding=PADDING,
             word_count=words_to_generate,
             max_sequence_length=self.model_with_info.catalog.max_sequence_length
         )
