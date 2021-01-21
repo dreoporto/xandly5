@@ -68,13 +68,14 @@ def main():
 
     catalog = Catalog()
     catalog.add_file_to_catalog(os.path.join(lyrics_dir, 'irish-lyrics-eof.txt'))
-    max_sequence_length, total_words, features, labels = catalog.tokenize_catalog(hp_padding)
+    catalog.tokenize_catalog(hp_padding)
 
-    x_train, x_valid, y_train, y_valid = train_test_split(features, labels, test_size=0.3, random_state=random_state)
+    x_train, x_valid, y_train, y_valid = train_test_split(catalog.features, catalog.labels,
+                                                          test_size=0.3, random_state=random_state)
 
     model = get_model(
-        max_sequence_length=max_sequence_length,
-        total_words=total_words,
+        max_sequence_length=catalog.max_sequence_length,
+        total_words=catalog.total_words,
         output_dimensions=hp_output_dimensions,
         lstm_units=hp_lstm_units
     )
@@ -90,8 +91,8 @@ def main():
     stopwatch.start()
 
     history = model.fit(
-        features,
-        labels,
+        catalog.features,
+        catalog.labels,
         validation_data=(x_valid, y_valid),
         epochs=hp_epochs,
         verbose=1,
@@ -110,7 +111,7 @@ def main():
         seed_text=seed_text,
         padding=hp_padding,
         word_count=words_to_generate,
-        max_sequence_length=max_sequence_length
+        max_sequence_length=catalog.max_sequence_length
     )
 
     lyrics = LyricsFormatter.format_lyrics(lyrics_text, word_group_count)

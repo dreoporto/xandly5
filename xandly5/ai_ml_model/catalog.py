@@ -1,6 +1,6 @@
 
 import numpy as np
-from typing import List
+from typing import List, Optional
 
 from tensorflow import keras
 
@@ -17,13 +17,17 @@ class Catalog:
     def __init__(self):
         self.catalog_items: List[str] = []
         self.tokenizer = Tokenizer()
+        self.max_sequence_length = 0
+        self.total_words = 0
+        self.features: Optional[np.ndarray] = None
+        self.labels: Optional[np.ndarray] = None
 
     def add_file_to_catalog(self, file_name: str):
         with open(file_name) as text_file:
             for line in text_file:
                 self.catalog_items.append(line.lower())
 
-    def tokenize_catalog(self, padding: str) -> (int, int, np.array, np.array):
+    def tokenize_catalog(self, padding: str) -> None:
 
         # tokenizer: fit, sequence, pad
         self.tokenizer.fit_on_texts(self.catalog_items)
@@ -38,16 +42,14 @@ class Catalog:
                 input_sequences.append(n_gram_sequence)
 
         # pad sequences
-        max_sequence_length = max([len(item) for item in input_sequences])
-        input_sequences = np.array(pad_sequences(input_sequences, maxlen=max_sequence_length, padding=padding))
+        self.max_sequence_length = max([len(item) for item in input_sequences])
+        input_sequences = np.array(pad_sequences(input_sequences, maxlen=self.max_sequence_length, padding=padding))
 
-        features = input_sequences[:, :-1]
-        labels = input_sequences[:, -1]
+        self.features = input_sequences[:, :-1]
+        labels_temp = input_sequences[:, -1]
 
-        total_words = len(self.tokenizer.word_index) + 1
-        labels = keras.utils.to_categorical(labels, num_classes=total_words)
-
-        return max_sequence_length, total_words, features, labels
+        self.total_words = len(self.tokenizer.word_index) + 1
+        self.labels = keras.utils.to_categorical(labels_temp, num_classes=self.total_words)
 
     def generate_lyrics_text(self, model: keras.Sequential, seed_text: str, padding: str,
                              word_count: int, max_sequence_length: int) -> str:
