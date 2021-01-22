@@ -14,9 +14,9 @@ class Catalog:
     represents a catalog (aka corpus) of works
     """
 
-    def __init__(self, padding: str = 'pre'):
+    def __init__(self, padding: str = 'pre', oov_token='<OOV>'):
         self.catalog_items: List[str] = []
-        self.tokenizer = Tokenizer()
+        self.tokenizer = Tokenizer(oov_token=oov_token)
         self.max_sequence_length = 0
         self.total_words = 0
         self.features: Optional[np.ndarray] = None
