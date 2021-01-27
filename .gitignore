@@ -2,7 +2,7 @@
 # PROJECT CUSTOM
 nlp_irish_lit_new_lyrics.txt
 
-# exclude h5 saved models FOR NOW - TODO AEO TEMP
+# exclude h5 saved models from Git
 *.h5
 
 # excluding PyCharm settings
