@@ -2,7 +2,7 @@
 import sys
 from typing import List
 
-from dre_lib.dre_time import Stopwatch
+from ptmlib.time import Stopwatch
 
 import tensorflow as tf
 from tensorflow import keras

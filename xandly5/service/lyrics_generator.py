@@ -5,7 +5,7 @@ from tensorflow import keras
 
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
-from dre_lib.dre_time import Stopwatch
+from ptmlib.time import Stopwatch
 
 
 class LyricsModelEnum(IntEnum):

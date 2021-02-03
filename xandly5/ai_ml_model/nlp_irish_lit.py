@@ -3,8 +3,8 @@ import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 
-from dre_lib.dre_time import Stopwatch
-from dre_lib import dre_chartz as dc
+from ptmlib.time import Stopwatch
+from ptmlib import charts as pch
 from catalog import Catalog
 from lyrics_formatter import LyricsFormatter
 
@@ -102,8 +102,8 @@ def main():
 
     model.save('nlp_irish_lit.h5')
 
-    dc.show_history_chart(history, 'accuracy')
-    dc.show_history_chart(history, 'loss')
+    pch.show_history_chart(history, 'accuracy')
+    pch.show_history_chart(history, 'loss')
 
     lyrics_text = catalog.generate_lyrics_text(
         model,
