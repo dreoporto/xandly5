@@ -1,5 +1,5 @@
-
 import numpy as np
+import csv
 from typing import List, Optional
 
 from tensorflow import keras
@@ -9,7 +9,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 class Catalog:
-
     """
     represents a catalog (aka corpus) of works
     """
@@ -23,10 +22,27 @@ class Catalog:
         self.labels: Optional[np.ndarray] = None
         self._padding = padding
 
-    def add_file_to_catalog(self, file_name: str):
-        with open(file_name) as text_file:
+    def add_file_to_catalog(self, file_name: str) -> None:
+        with open(file_name, 'r') as text_file:
             for line in text_file:
                 self.catalog_items.append(line.lower())
+
+    def add_csv_file_to_catalog(self, file_name: str, text_column: int, skip_first_line: bool = True,
+                                delimiter: str = ',') -> None:
+        """
+        add a csv, tsv or other delimited file to the catalog
+        :param file_name: file name with lyrics/text
+        :param text_column: column number to select, 0 based
+        :param skip_first_line: skip first line of text
+        :param delimiter: delimiter to use as separator
+        :return: None
+        """
+        with open(file_name, 'r') as text_file:
+            csv_reader = csv.reader(text_file, delimiter=delimiter)
+            if skip_first_line:
+                next(csv_reader)
+            for row in csv_reader:
+                self.catalog_items.append(row[text_column])
 
     def tokenize_catalog(self) -> None:
 
