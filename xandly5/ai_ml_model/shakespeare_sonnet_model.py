@@ -30,23 +30,6 @@ def get_model(total_words: int, max_sequence_length: int,
     return model
 
 
-# TODO AEO MOVE THIS OUT
-def speak_lyrics(lyrics: str):
-    import pyttsx3
-
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-
-    engine.setProperty('rate', 160)
-    # noinspection PyUnresolvedReferences
-    engine.setProperty('voice', voices[1].id)
-
-    engine.say(lyrics)
-
-    engine.runAndWait()
-    engine.stop()
-
-
 def main():
 
     tensorflow_diagnostics()
@@ -61,12 +44,13 @@ def main():
     # other params
     lyrics_dir = 'lyrics_files'
     word_group_count = 4
-    seed_text = 'andre went to dublin looking for a breakdown'
+    seed_text = 'andre went to stay on the frozen shore'
     words_to_generate = 100
     random_state = 42
 
     catalog = Catalog()
-    catalog.add_file_to_catalog(os.path.join(lyrics_dir, 'irish-lyrics-eof.txt'))
+    catalog.add_csv_file_to_catalog(os.path.join(lyrics_dir, 'shakespeare-sonnets-data.txt'), text_column=0,
+                                    delimiter='\t')
     catalog.tokenize_catalog()
 
     x_train, x_valid, y_train, y_valid = train_test_split(catalog.features, catalog.labels,
@@ -100,7 +84,7 @@ def main():
 
     stopwatch.stop()
 
-    model.save('saved_models/nlp_irish_lit.h5')
+    model.save('saved_models/shakespeare_sonnet.h5')
 
     pch.show_history_chart(history, 'accuracy')
     pch.show_history_chart(history, 'loss')
@@ -115,12 +99,9 @@ def main():
     lyrics = LyricsFormatter.format_lyrics(lyrics_text, word_group_count)
     print(lyrics)
 
-    with open('saved_models/nlp_irish_lit_new_lyrics.txt', 'w') as lyrics_file:
+    with open('saved_models/shakespeare_sonnet_new_lyrics.txt', 'w') as lyrics_file:
         lyrics_file.write(lyrics)
         lyrics_file.close()
-
-    # SPEAK, POET, SPEAK!
-    # speak_lyrics(lyrics)  # TODO AEO TEMP
 
 
 if __name__ == '__main__':

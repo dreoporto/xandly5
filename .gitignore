@@ -1,6 +1,6 @@
 
 # PROJECT CUSTOM
-nlp_irish_lit_new_lyrics.txt
+*_lyrics.txt
 
 # exclude h5 saved models from Git
 *.h5
