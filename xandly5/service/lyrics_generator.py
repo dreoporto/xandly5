@@ -1,4 +1,3 @@
-
 from typing import Dict, Optional
 from enum import IntEnum
 from tensorflow import keras
@@ -9,9 +8,8 @@ from ptmlib.time import Stopwatch
 
 
 class LyricsModelEnum(IntEnum):
-    IRISH_LIT = 1
-    SONNETS = 2
-    POE_POEM = 3
+    SONNETS = 1
+    POE_POEM = 2
 
 
 class LyricsModel:
@@ -26,7 +24,6 @@ class LyricsModel:
 def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModel]:
     print('loading lyrics models')
     models: Dict[LyricsModelEnum, LyricsModel] = {
-        LyricsModelEnum.IRISH_LIT: LyricsModel('nlp_irish_lit.h5', 'irish-lyrics-eof.txt'),
         LyricsModelEnum.SONNETS: LyricsModel('shakespeare_sonnet.h5', 'shakespeare-sonnets-lyrics.txt'),
         LyricsModelEnum.POE_POEM: LyricsModel('poe_poem.h5', 'poe-poem-lines.txt')
     }
@@ -52,7 +49,6 @@ class LyricsGenerator:
         self.model_with_info = _lyrics_models[model_id]
 
     def generate_lyrics(self, seed_text: str, word_group_count: int, words_to_generate: int) -> str:
-
         lyrics_text = self.model_with_info.catalog.generate_lyrics_text(
             self.model_with_info.model,
             seed_text=seed_text,
@@ -64,18 +60,27 @@ class LyricsGenerator:
         return lyrics_text
 
 
+# TODO AEO MOVE THIS OUT
+def speak_lyrics(lyrics: str):
+    import pyttsx3
+
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+
+    engine.setProperty('rate', 160)
+    # noinspection PyUnresolvedReferences
+    engine.setProperty('voice', voices[1].id)
+
+    engine.say(lyrics)
+
+    engine.runAndWait()
+    engine.stop()
+
+
 def main():
     stopwatch = Stopwatch()
 
-    lyrics = 'i wish to see green fields once more'
-
-    stopwatch.start()
-    generator = LyricsGenerator(LyricsModelEnum.IRISH_LIT)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, words_to_generate=96)
-    print(lyrics)
-    stopwatch.stop()
-
-    lyrics = 'you\'re my only hope'
+    lyrics = 'evening fountians lit loss'
 
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.SONNETS)
@@ -83,13 +88,17 @@ def main():
     print(lyrics)
     stopwatch.stop()
 
-    lyrics = 'deep sleep lights ways paths unlock evening madness'
+    speak_lyrics(lyrics)
+
+    lyrics = 'deep sleep lights the oasis'
 
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, words_to_generate=96)
+    lyrics = generator.generate_lyrics(lyrics, word_group_count=5, words_to_generate=95)
     print(lyrics)
     stopwatch.stop()
+
+    speak_lyrics(lyrics)
 
 
 if __name__ == '__main__':
