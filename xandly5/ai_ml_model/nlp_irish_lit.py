@@ -108,8 +108,7 @@ def main():
     lyrics_text = catalog.generate_lyrics_text(
         model,
         seed_text=seed_text,
-        word_count=words_to_generate,
-        max_sequence_length=catalog.max_sequence_length
+        word_count=words_to_generate
     )
 
     lyrics = LyricsFormatter.format_lyrics(lyrics_text, word_group_count)

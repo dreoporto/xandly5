@@ -62,8 +62,7 @@ class LyricsGenerator:
         lyrics_text = self.model_with_info.catalog.generate_lyrics_text(
             self.model_with_info.model,
             seed_text=seed_text,
-            word_count=words_to_generate,
-            max_sequence_length=self.model_with_info.catalog.max_sequence_length
+            word_count=words_to_generate
         )
 
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
