@@ -73,14 +73,14 @@ class LyricsGenerator:
 def main():
     stopwatch = Stopwatch()
 
+    lyrics = 'i wish to see green fields once more'
+
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.IRISH_LIT)
-    lyrics = generator.generate_lyrics('i wish to see green fields once more',
-                                       word_group_count=4, words_to_generate=96)
+    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, words_to_generate=96)
     print(lyrics)
     stopwatch.stop()
 
-    # lyrics = 'what lady is that which doth enrich the hand of yonder knight'
     lyrics = 'you\'re my only hope'
 
     stopwatch.start()
