@@ -11,6 +11,7 @@ from ptmlib.time import Stopwatch
 class LyricsModelEnum(IntEnum):
     IRISH_LIT = 1
     SONNETS = 2
+    POE_POEM = 3
 
 
 class LyricsModel:
@@ -27,6 +28,7 @@ def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModel]:
     models: Dict[LyricsModelEnum, LyricsModel] = {
         LyricsModelEnum.IRISH_LIT: LyricsModel('nlp_irish_lit.h5', 'irish-lyrics-eof.txt'),
         LyricsModelEnum.SONNETS: LyricsModel('shakespeare_sonnet.h5', 'shakespeare-sonnets-lyrics.txt'),
+        LyricsModelEnum.POE_POEM: LyricsModel('poe_poem.h5', 'poe-poem-lines.txt')
     }
 
     for _, lyrics_model in models.items():
@@ -78,6 +80,14 @@ def main():
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.SONNETS)
     lyrics = generator.generate_lyrics(lyrics, word_group_count=8, words_to_generate=92)
+    print(lyrics)
+    stopwatch.stop()
+
+    lyrics = 'deep sleep lights ways paths unlock evening madness'
+
+    stopwatch.start()
+    generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
+    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, words_to_generate=96)
     print(lyrics)
     stopwatch.stop()
 
