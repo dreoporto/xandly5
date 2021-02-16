@@ -49,8 +49,7 @@ def main():
     random_state = 42
 
     catalog = Catalog()
-    catalog.add_csv_file_to_catalog(os.path.join(lyrics_dir, 'shakespeare-sonnets-data.txt'), text_column=0,
-                                    delimiter='\t')
+    catalog.add_file_to_catalog(os.path.join(lyrics_dir, 'shakespeare-sonnets-lyrics.txt'))
     catalog.tokenize_catalog()
 
     x_train, x_valid, y_train, y_valid = train_test_split(catalog.features, catalog.labels,
