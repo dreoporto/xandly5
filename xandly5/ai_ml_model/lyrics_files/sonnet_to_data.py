@@ -1,6 +1,7 @@
 
 """
 CONVERTS RAW TEXT OF SHAKESPEARE'S SONNETS TO A TAB-SEPARATED DATA FILE
+ALSO GENERATES A FILE WITH LYRICS ONLY, FOR NLP USAGE
 
 TEXT	SONNET NUMBER	LINE
 From fairest creatures we desire increase,	1	1
@@ -10,7 +11,7 @@ That thereby beauty's rose might never die,	1	2
 import re
 
 
-def main():
+def convert_text_to_data():
 
     sonnet_number: int = 0
     line_number: int = 0
@@ -36,6 +37,21 @@ def main():
                 else:
                     line_number += 1
                     sonnets_data.write(f'{clean_line}\t{sonnet_number}\t{line_number}\n')
+
+
+def convert_data_to_lyrics():
+
+    with open('shakespeare-sonnets-data.txt', 'r') as sonnets_data:
+        with open('shakespeare-sonnets-lyrics.txt', 'w') as sonnets_lyrics:
+            next(sonnets_data)  # skip first line
+            for line in sonnets_data:
+                lyrics = line.split('\t')[0]
+                sonnets_lyrics.write(f'{lyrics}\n')
+
+
+def main():
+    convert_text_to_data()
+    convert_data_to_lyrics()
 
 
 if __name__ == '__main__':
