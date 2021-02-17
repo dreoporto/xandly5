@@ -7,6 +7,7 @@ from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from ptmlib.time import Stopwatch
 
 
+# TODO AEO move to types
 class LyricsModelEnum(IntEnum):
     SONNETS = 1
     POE_POEM = 2

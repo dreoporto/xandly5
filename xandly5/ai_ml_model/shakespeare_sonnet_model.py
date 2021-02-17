@@ -34,6 +34,7 @@ def main():
 
     tensorflow_diagnostics()
 
+    # TODO AEO factor out duplicate code from models; move params to config yaml/json
     # HYPER PARAMS
     hp_epochs = 150
     hp_output_dimensions = 100
