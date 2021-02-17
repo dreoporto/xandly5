@@ -75,14 +75,9 @@ class Catalog:
             token_list = self.tokenizer.texts_to_sequences([seed_text])[0]
             token_list = pad_sequences([token_list], maxlen=self.max_sequence_length - 1, padding=self._padding)
             predicted = np.argmax(model.predict(token_list), axis=-1)
-            output_word = ''
 
-            # TODO AEO there's a faster way to do this
-            for word, index in self.tokenizer.word_index.items():
-                if index == predicted:
-                    output_word = word
-                    break
-
-            seed_text += ' ' + output_word
+            output_word = self.tokenizer.index_word[int(predicted)]
+            if output_word is not None:
+                seed_text += ' ' + output_word
 
         return seed_text
