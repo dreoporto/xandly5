@@ -32,17 +32,11 @@ class LyricsGenerator:
 
     def __init__(self, model_id: LyricsModelEnum):
         print('init LyricsGenerator instance')
-        self.model_with_info = _lyrics_models[model_id]
+        self.model_meta: LyricsModelMeta = _lyrics_models[model_id]
 
     def generate_lyrics(self, seed_text: str, word_group_count: int, words_to_generate: int) -> str:
-        lyrics_text = self.model_with_info.catalog.generate_lyrics_text(
-            self.model_with_info.model,
-            seed_text=seed_text,
-            word_count=words_to_generate
-        )
-
+        lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=words_to_generate)
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
-
         return lyrics_text
 
 
