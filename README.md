@@ -6,7 +6,7 @@ This project should *not* be seen as an attempt to replace creative artists.  Th
 
 ## Public Domain Sources
 
-To ensure we respect copyrights, all lyrics are from public domain works:
+To ensure we respect copyrights, all lyrics used to train models are from public domain works:
 
 - Shakespeare's Sonnets
 - Edgar Allan Poe's Complete Poetical Works
