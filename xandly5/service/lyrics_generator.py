@@ -1,32 +1,17 @@
-from typing import Dict, Optional
-from enum import IntEnum
+from typing import Dict
 from tensorflow import keras
-
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
+from xandly5.types.lyrics_model_meta import LyricsModelMeta
+from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from ptmlib.time import Stopwatch
 
 
-# TODO AEO move to types
-class LyricsModelEnum(IntEnum):
-    SONNETS = 1
-    POE_POEM = 2
-
-
-class LyricsModel:
-
-    def __init__(self, model_file: str, lyrics_file: str):
-        self.model_file = model_file
-        self.lyrics_file = lyrics_file
-        self.model: Optional[keras.Sequential] = None
-        self.catalog: Optional[Catalog] = None
-
-
-def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModel]:
+def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModelMeta]:
     print('loading lyrics models')
-    models: Dict[LyricsModelEnum, LyricsModel] = {
-        LyricsModelEnum.SONNETS: LyricsModel('shakespeare_sonnet.h5', 'shakespeare-sonnets-lyrics.txt'),
-        LyricsModelEnum.POE_POEM: LyricsModel('poe_poem.h5', 'poe-poem-lines.txt')
+    models: Dict[LyricsModelEnum, LyricsModelMeta] = {
+        LyricsModelEnum.SONNETS: LyricsModelMeta('shakespeare_sonnet.h5', 'shakespeare-sonnets-lyrics.txt'),
+        LyricsModelEnum.POE_POEM: LyricsModelMeta('poe_poem.h5', 'poe-poem-lines.txt')
     }
 
     for _, lyrics_model in models.items():
