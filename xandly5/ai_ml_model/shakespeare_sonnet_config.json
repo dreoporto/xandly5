@@ -1,0 +1,18 @@
+{
+    "hp_epochs": 150,
+    "hp_output_dimensions": 100,
+    "hp_lstm_units": 150,
+    "hp_patience": 8,
+    "hp_min_delta": 0.001,
+    "hp_test_size": 0.3,
+
+    "lyrics_file_path": "lyrics_files/shakespeare-sonnets-lyrics.txt",
+    "saved_model_path": "saved_models/shakespeare_sonnet.h5",
+    "saved_lyrics_path": "saved_models/shakespeare_sonnet_new_lyrics.txt",
+
+    "word_group_count": 8,
+    "seed_text": "andre went to stay on the frozen shore",
+    "words_to_generate": 100,
+    "random_state": 42,
+    "is_interactive": true
+}
