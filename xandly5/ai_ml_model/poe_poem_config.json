@@ -1,0 +1,17 @@
+{
+    "hp_epochs": 150,
+    "hp_output_dimensions": 100,
+    "hp_lstm_units": 150,
+    "hp_patience": 8,
+    "hp_min_delta": 0.001,
+    "hp_test_size": 0.3,
+
+    "lyrics_file_path": "lyrics_files/poe-poem-lines.txt",
+    "saved_model_path": "saved_models/poe_poem.h5",
+    "saved_lyrics_path": "saved_models/poe_poem_new_lyrics.txt",
+
+    "word_group_count": 4,
+    "seed_text": "a dreary midnight bird",
+    "words_to_generate": 100,
+    "random_state": 42
+}
