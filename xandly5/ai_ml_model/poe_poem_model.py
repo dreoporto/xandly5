@@ -20,26 +20,69 @@ class PoePoemModel:
     def __init__(self, config_file):
         with open(config_file) as json_file:
             self.config = json.load(json_file)
+        self.catalog = Catalog()
+        self.catalog.add_file_to_catalog(self.config['lyrics_file_path'])
+        self.catalog.tokenize_catalog()
+        self.is_interactive = self.config['is_interactive']
 
-    @staticmethod
-    def _get_model(total_words: int, max_sequence_length: int,
-                   output_dimensions: int, lstm_units: int) -> keras.Sequential:
+    def _get_compiled_model(self) -> keras.Sequential:
+
+        total_words = self.catalog.total_words
+        dimensions = self.config['hp_output_dimensions']
+        input_length = self.catalog.max_sequence_length - 1
+        units = self.config['hp_lstm_units']
 
         model = keras.Sequential([
-            keras.layers.Embedding(total_words, output_dimensions, input_length=max_sequence_length - 1),
-            keras.layers.Bidirectional(keras.layers.LSTM(lstm_units)),
+            keras.layers.Embedding(total_words, dimensions, input_length=input_length),
+            keras.layers.Bidirectional(keras.layers.LSTM(units)),
             keras.layers.Dense(total_words, activation='softmax')
         ])
 
         model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-        model.summary()
+        if self.is_interactive:
+            model.summary()
 
         return model
 
-    def _generate_lyrics(self, model: keras.Sequential, catalog: Catalog):
+    def _fit_model(self, model: keras.Sequential):
 
-        lyrics_text = catalog.generate_lyrics_text(
+        early_stopping = keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=self.config['hp_patience'],
+            min_delta=self.config['hp_min_delta'],
+            mode='min'
+        )
+
+        stopwatch = Stopwatch()
+        stopwatch.start()
+
+        x_train, x_valid, y_train, y_valid = train_test_split(
+            self.catalog.features, self.catalog.labels,
+            test_size=self.config['hp_test_size'],
+            random_state=self.config['random_state']
+        )
+
+        history = model.fit(
+            self.catalog.features,
+            self.catalog.labels,
+            validation_data=(x_valid, y_valid),
+            epochs=self.config['hp_epochs'],
+            verbose=1,
+            callbacks=[early_stopping]
+        )
+
+        stopwatch.stop(silent=not self.is_interactive)
+
+        model.save(self.config['saved_model_path'])
+
+        if self.is_interactive:
+            pch.show_history_chart(history, 'accuracy')
+            pch.show_history_chart(history, 'loss')
+
+    def _generate_lyrics(self, model: keras.Sequential):
+
+        lyrics_text = self.catalog.generate_lyrics_text(
             model,
             seed_text=self.config['seed_text'],
             word_count=self.config['words_to_generate']
@@ -54,51 +97,9 @@ class PoePoemModel:
 
     def train_model(self):
 
-        catalog = Catalog()
-        catalog.add_file_to_catalog(self.config['lyrics_file_path'])
-        catalog.tokenize_catalog()
-
-        x_train, x_valid, y_train, y_valid = train_test_split(
-            catalog.features, catalog.labels,
-            test_size=self.config['hp_test_size'],
-            random_state=self.config['random_state']
-        )
-
-        model = self._get_model(
-            max_sequence_length=catalog.max_sequence_length,
-            total_words=catalog.total_words,
-            output_dimensions=self.config['hp_output_dimensions'],
-            lstm_units=self.config['hp_lstm_units']
-        )
-
-        early_stopping = keras.callbacks.EarlyStopping(
-            monitor='val_loss',
-            patience=self.config['hp_patience'],
-            min_delta=self.config['hp_min_delta'],
-            mode='min'
-        )
-
-        stopwatch = Stopwatch()
-        stopwatch.start()
-
-        history = model.fit(
-            catalog.features,
-            catalog.labels,
-            validation_data=(x_valid, y_valid),
-            epochs=self.config['hp_epochs'],
-            verbose=1,
-            callbacks=[early_stopping]
-        )
-
-        stopwatch.stop()
-
-        model.save(self.config['saved_model_path'])
-
-        if self.config['is_interactive']:
-            pch.show_history_chart(history, 'accuracy')
-            pch.show_history_chart(history, 'loss')
-
-        self._generate_lyrics(model, catalog)
+        model = self._get_compiled_model()
+        self._fit_model(model)
+        self._generate_lyrics(model)
 
 
 def main():
