@@ -9,6 +9,7 @@ That thereby beauty's rose might never die,	1	2
 """
 
 import re
+import string
 
 
 def convert_text_to_data():
@@ -25,7 +26,10 @@ def convert_text_to_data():
 
             for line in sonnets_file:
 
+                # strip whitespace
                 clean_line = line.strip()
+                # strip punctuation at BEGINNING and END of words; does not change words such as: beauty's and o'er
+                clean_line = ' '.join([word.strip(string.punctuation) for word in clean_line.split(" ")])
 
                 if len(clean_line) == 0:
                     # skip blank line

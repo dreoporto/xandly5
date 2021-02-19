@@ -69,6 +69,9 @@ class Catalog:
         self.total_words = len(self.tokenizer.word_index) + 1
         self.labels = keras.utils.to_categorical(labels_temp, num_classes=self.total_words)
 
+        # for troubleshooting only! output word index
+        # print(sorted(self.tokenizer.word_index.keys()))
+
     def generate_lyrics_text(self, model: keras.Sequential, seed_text: str, word_count: int) -> str:
 
         for _ in range(word_count):
