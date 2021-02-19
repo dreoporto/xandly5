@@ -15,7 +15,7 @@ def tensorflow_diagnostics():
     print('keras version:', keras.__version__)
 
 
-class PoePoemModel:
+class LyricsModelGenerator:
 
     def __init__(self, config_file):
         with open(config_file) as json_file:
@@ -45,7 +45,7 @@ class PoePoemModel:
 
         return model
 
-    def _fit_model(self, model: keras.Sequential):
+    def _train_model(self, model: keras.Sequential):
 
         early_stopping = keras.callbacks.EarlyStopping(
             monitor='val_loss',
@@ -74,13 +74,11 @@ class PoePoemModel:
 
         stopwatch.stop(silent=not self.is_interactive)
 
-        model.save(self.config['saved_model_path'])
-
         if self.is_interactive:
             pch.show_history_chart(history, 'accuracy')
             pch.show_history_chart(history, 'loss')
 
-    def _generate_lyrics(self, model: keras.Sequential):
+    def _generate_sample_lyrics(self, model: keras.Sequential):
 
         lyrics_text = self.catalog.generate_lyrics_text(
             model,
@@ -95,18 +93,9 @@ class PoePoemModel:
             lyrics_file.write(lyrics)
             lyrics_file.close()
 
-    def train_model(self):
+    def generate_model(self):
 
         model = self._get_compiled_model()
-        self._fit_model(model)
-        self._generate_lyrics(model)
-
-
-def main():
-    tensorflow_diagnostics()
-    lyrics_model = PoePoemModel('poe_poem_config.json')
-    lyrics_model.train_model()
-
-
-if __name__ == '__main__':
-    main()
+        self._train_model(model)
+        model.save(self.config['saved_model_path'])
+        self._generate_sample_lyrics(model)
