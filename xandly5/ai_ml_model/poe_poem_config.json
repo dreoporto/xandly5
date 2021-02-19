@@ -13,5 +13,6 @@
     "word_group_count": 4,
     "seed_text": "a dreary midnight bird",
     "words_to_generate": 100,
-    "random_state": 42
+    "random_state": 42,
+    "is_interactive": true
 }
