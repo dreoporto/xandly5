@@ -1,9 +1,6 @@
 
-# PROJECT CUSTOM
-*_lyrics.txt
-
-# exclude h5 saved models from Git
-*.h5
+# exclude saved models and sample lyrics
+saved_models/
 
 # excluding PyCharm settings
 .idea/
