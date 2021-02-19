@@ -75,8 +75,8 @@ class LyricsModelGenerator:
         stopwatch.stop(silent=not self.is_interactive)
 
         if self.is_interactive:
-            pch.show_history_chart(history, 'accuracy')
-            pch.show_history_chart(history, 'loss')
+            pch.show_history_chart(history, 'accuracy', save_fig_enabled=self.config['save_chart'])
+            pch.show_history_chart(history, 'loss', save_fig_enabled=self.config['save_chart'])
 
     def _generate_sample_lyrics(self, model: keras.Sequential):
 

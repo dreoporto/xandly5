@@ -14,5 +14,6 @@
     "seed_text": "a dreary midnight bird",
     "words_to_generate": 100,
     "random_state": 42,
-    "is_interactive": true
+    "is_interactive": true,
+    "save_chart": false
 }
