@@ -19,7 +19,9 @@ class LyricsFormatter:
         for word in words:
             word_index += 1
             formatted_lyrics += word
-            if word_index % (word_group_count * 2) == 0:
+            is_last_word = (word_index == len(words))
+
+            if is_last_word or word_index % (word_group_count * 2) == 0:
                 formatted_lyrics += ' \n\n'
             elif word_index % word_group_count == 0:
                 formatted_lyrics += ',\n  '

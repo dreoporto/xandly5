@@ -1,9 +1,11 @@
-from typing import Dict
+from typing import Dict, List
 from tensorflow import keras
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
+from xandly5.types.lyrics_section import LyricsSection
+from xandly5.types.lyrics_section import LyricsSectionType
 from ptmlib.time import Stopwatch
 
 
@@ -39,6 +41,20 @@ class LyricsGenerator:
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
         return lyrics_text
 
+    def generate_lyrics_from_sections(self, lyrics_sections: List[LyricsSection]) -> str:
+        lyrics_text = ''
+
+        for section in lyrics_sections:
+            section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text,
+                                                                          word_count=section.word_count)
+            section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
+                                                                   word_group_count=section.word_group_count)
+
+            # TODO AEO temp debug info
+            lyrics_text += f'{section.section_type.name}\n\n' + section.generated_text
+
+        return lyrics_text
+
 
 # TODO AEO MOVE THIS OUT
 def speak_lyrics(lyrics: str):
@@ -57,9 +73,8 @@ def speak_lyrics(lyrics: str):
     engine.stop()
 
 
-def main():
+def create_sonnet():
     stopwatch = Stopwatch()
-
     lyrics = 'evening fountains lit loss'
 
     stopwatch.start()
@@ -70,6 +85,9 @@ def main():
 
     speak_lyrics(lyrics)
 
+
+def create_poe_poem():
+    stopwatch = Stopwatch()
     lyrics = 'deep sleep the oasis'
 
     stopwatch.start()
@@ -79,6 +97,42 @@ def main():
     stopwatch.stop()
 
     speak_lyrics(lyrics)
+
+
+def create_structured_lyrics():
+    stopwatch = Stopwatch()
+    sections: List[LyricsSection] = [
+        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+                      seed_text='a dreary midnight bird and here i heard'),
+        LyricsSection(section_type=LyricsSectionType.CHORUS, word_group_count=4, word_count=16,
+                      seed_text='said he art too seas for totter into'),
+        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+                      seed_text='tone of his eyes of night litten have'),
+        LyricsSection(section_type=LyricsSectionType.CHORUS, word_group_count=4, word_count=16,
+                      seed_text='said he art too seas for totter into'),
+        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+                      seed_text='answer step only blows of their harp string'),
+        LyricsSection(section_type=LyricsSectionType.BRIDGE, word_group_count=4, word_count=20,
+                      seed_text='said he art too'),
+        LyricsSection(section_type=LyricsSectionType.OUTRO, word_group_count=4, word_count=16,
+                      seed_text='said he art too seas for totter into'),
+    ]
+
+    stopwatch.start()
+    generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
+    lyrics = generator.generate_lyrics_from_sections(sections)
+    print(lyrics)
+    stopwatch.stop()
+
+    # TODO AEO temp replacements
+    speak_lyrics(lyrics.replace('VERSE', '').replace('CHORUS', '').replace('BRIDGE', '').replace('OUTRO', ''))
+
+
+def main():
+
+    # create_sonnet()
+    # create_poe_poem()
+    create_structured_lyrics()
 
 
 if __name__ == '__main__':
