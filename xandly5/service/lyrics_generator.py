@@ -1,11 +1,12 @@
 from typing import Dict, List
 from tensorflow import keras
+import re
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.lyrics_section import LyricsSection
-from xandly5.types.lyrics_section import LyricsSectionType
+from xandly5.types.section_type_enum import SectionTypeEnum
 from ptmlib.time import Stopwatch
 
 
@@ -50,8 +51,7 @@ class LyricsGenerator:
             section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
                                                                    word_group_count=section.word_group_count)
 
-            # TODO AEO temp debug info
-            lyrics_text += f'{section.section_type.name}\n\n' + section.generated_text
+            lyrics_text += f'--{section.section_type.name}--\n\n' + section.generated_text
 
         return lyrics_text
 
@@ -102,19 +102,19 @@ def create_poe_poem():
 def create_structured_lyrics():
     stopwatch = Stopwatch()
     sections: List[LyricsSection] = [
-        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
                       seed_text='a dreary midnight bird and here i heard'),
-        LyricsSection(section_type=LyricsSectionType.CHORUS, word_group_count=4, word_count=16,
+        LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
                       seed_text='said he art too seas for totter into'),
-        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
                       seed_text='tone of his eyes of night litten have'),
-        LyricsSection(section_type=LyricsSectionType.CHORUS, word_group_count=4, word_count=16,
+        LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
                       seed_text='said he art too seas for totter into'),
-        LyricsSection(section_type=LyricsSectionType.VERSE, word_group_count=4, word_count=32,
+        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
                       seed_text='answer step only blows of their harp string'),
-        LyricsSection(section_type=LyricsSectionType.BRIDGE, word_group_count=4, word_count=20,
+        LyricsSection(section_type=SectionTypeEnum.BRIDGE, word_group_count=4, word_count=20,
                       seed_text='said he art too'),
-        LyricsSection(section_type=LyricsSectionType.OUTRO, word_group_count=4, word_count=16,
+        LyricsSection(section_type=SectionTypeEnum.OUTRO, word_group_count=4, word_count=16,
                       seed_text='said he art too seas for totter into'),
     ]
 
@@ -124,8 +124,8 @@ def create_structured_lyrics():
     print(lyrics)
     stopwatch.stop()
 
-    # TODO AEO temp replacements
-    speak_lyrics(lyrics.replace('VERSE', '').replace('CHORUS', '').replace('BRIDGE', '').replace('OUTRO', ''))
+    lyrics = re.sub('--[A-Z]+--', '', lyrics)
+    speak_lyrics(lyrics)
 
 
 def main():
