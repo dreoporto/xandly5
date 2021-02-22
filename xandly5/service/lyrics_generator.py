@@ -34,8 +34,8 @@ class LyricsGenerator:
         print('init LyricsGenerator instance')
         self.model_meta: LyricsModelMeta = _lyrics_models[model_id]
 
-    def generate_lyrics(self, seed_text: str, word_group_count: int, words_to_generate: int) -> str:
-        lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=words_to_generate)
+    def generate_lyrics(self, seed_text: str, word_group_count: int, word_count: int) -> str:
+        lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=word_count)
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
         return lyrics_text
 
@@ -60,21 +60,21 @@ def speak_lyrics(lyrics: str):
 def main():
     stopwatch = Stopwatch()
 
-    lyrics = 'evening fountians lit loss'
+    lyrics = 'evening fountains lit loss'
 
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.SONNETS)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=8, words_to_generate=92)
+    lyrics = generator.generate_lyrics(lyrics, word_group_count=8, word_count=96)
     print(lyrics)
     stopwatch.stop()
 
     speak_lyrics(lyrics)
 
-    lyrics = 'deep sleep lights the oasis'
+    lyrics = 'deep sleep the oasis'
 
     stopwatch.start()
     generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=5, words_to_generate=95)
+    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, word_count=104)
     print(lyrics)
     stopwatch.stop()
 

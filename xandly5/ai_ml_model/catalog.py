@@ -74,7 +74,10 @@ class Catalog:
 
     def generate_lyrics_text(self, model: keras.Sequential, seed_text: str, word_count: int) -> str:
 
-        for _ in range(word_count):
+        seed_text_word_count = len(seed_text.split(' '))
+        words_to_generate = word_count - seed_text_word_count
+
+        for _ in range(words_to_generate):
             token_list = self.tokenizer.texts_to_sequences([seed_text])[0]
             token_list = pad_sequences([token_list], maxlen=self.max_sequence_length - 1, padding=self._padding)
             predicted = np.argmax(model.predict(token_list), axis=-1)

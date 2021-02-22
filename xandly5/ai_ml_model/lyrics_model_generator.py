@@ -83,7 +83,7 @@ class LyricsModelGenerator:
         lyrics_text = self.catalog.generate_lyrics_text(
             model,
             seed_text=self.config['seed_text'],
-            word_count=self.config['words_to_generate']
+            word_count=self.config['word_count']
         )
 
         lyrics = LyricsFormatter.format_lyrics(lyrics_text, self.config['word_group_count'])
