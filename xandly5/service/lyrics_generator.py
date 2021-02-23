@@ -67,15 +67,18 @@ class LyricsGenerator:
 
             total_word_count += section.word_count
 
+            # use current lyrics as seed text
             if lyrics_text != '':
                 lyrics_text += ' '
-            lyrics_text = self.model_meta.generate_lyrics_text(seed_text=lyrics_text + section.seed_text.strip(),
+            lyrics_text += section.seed_text.strip()
+            lyrics_text = self.model_meta.generate_lyrics_text(seed_text=lyrics_text,
                                                                word_count=total_word_count)
-
+            # get section text from lyrics, then format
             section.generated_text = self._get_words_at_end(lyrics_text, section.word_count)
             section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
                                                                    word_group_count=section.word_group_count)
 
+            # will return formatted lyrics with section headers
             formatted_lyrics_text += f'--{section.section_type.name}--\n\n' + section.generated_text
 
         return formatted_lyrics_text
