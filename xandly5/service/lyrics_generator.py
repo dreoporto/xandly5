@@ -42,11 +42,11 @@ class LyricsGenerator:
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
         return lyrics_text
 
-    def generate_lyrics_from_sections(self, lyrics_sections: List[LyricsSection]) -> str:
+    def generate_lyrics_from_independent_sections(self, lyrics_sections: List[LyricsSection]) -> str:
         lyrics_text = ''
 
         for section in lyrics_sections:
-            section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text,
+            section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text.strip(),
                                                                           word_count=section.word_count)
             section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
                                                                    word_group_count=section.word_group_count)
@@ -54,6 +54,34 @@ class LyricsGenerator:
             lyrics_text += f'--{section.section_type.name}--\n\n' + section.generated_text
 
         return lyrics_text
+
+    def generate_lyrics_from_sections(self, lyrics_sections: List[LyricsSection]) -> str:
+        lyrics_text = ''
+        formatted_lyrics_text = ''
+        total_word_count = 0
+
+        for section in lyrics_sections:
+
+            total_word_count += section.word_count
+
+            if lyrics_text != '':
+                lyrics_text += ' '
+            lyrics_text = self.model_meta.generate_lyrics_text(seed_text=lyrics_text + section.seed_text.strip(),
+                                                               word_count=total_word_count)
+
+            section.generated_text = self._get_words_at_end(lyrics_text, section.word_count)
+            section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
+                                                                   word_group_count=section.word_group_count)
+
+            formatted_lyrics_text += f'--{section.section_type.name}--\n\n' + section.generated_text
+
+        return formatted_lyrics_text
+
+    @staticmethod
+    def _get_words_at_end(text: str, word_count) -> str:
+        text_array = text.split(' ')
+        end_words_array = text_array[word_count * -1:]
+        return ' '.join(end_words_array)
 
 
 # TODO AEO MOVE THIS OUT
@@ -129,7 +157,6 @@ def create_structured_lyrics():
 
 
 def main():
-
     # create_sonnet()
     # create_poe_poem()
     create_structured_lyrics()
