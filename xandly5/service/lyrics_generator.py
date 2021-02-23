@@ -45,6 +45,9 @@ class LyricsGenerator:
     def generate_lyrics_from_independent_sections(self, lyrics_sections: List[LyricsSection]) -> str:
         lyrics_text = ''
 
+        # TODO AEO clean up seed_text to avoid issues
+        # create unit tests to confirm word counts and seed text for each section
+
         for section in lyrics_sections:
             section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text.strip(),
                                                                           word_count=section.word_count)
