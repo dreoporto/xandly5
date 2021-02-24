@@ -1,6 +1,9 @@
 from typing import Dict, List
-from tensorflow import keras
 import re
+import os
+
+from tensorflow import keras
+
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from xandly5.types.lyrics_model_meta import LyricsModelMeta
@@ -17,10 +20,14 @@ def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModelMeta]:
         LyricsModelEnum.POE_POEM: LyricsModelMeta('poe_poem.h5', 'poe-poem-lines.txt')
     }
 
+    package_directory = os.path.dirname(os.path.abspath(__file__))
+
     for _, lyrics_model in models.items():
-        lyrics_model.model = keras.models.load_model(f'../ai_ml_model/saved_models/{lyrics_model.model_file}')
+        lyrics_model.model = keras.models.load_model(
+            os.path.join(package_directory, '../ai_ml_model/saved_models/', lyrics_model.model_file))
         lyrics_model.catalog = Catalog()
-        lyrics_model.catalog.add_file_to_catalog(f'../ai_ml_model/lyrics_files/{lyrics_model.lyrics_file}')
+        lyrics_model.catalog.add_file_to_catalog(
+            os.path.join(package_directory, '../ai_ml_model/lyrics_files/', lyrics_model.lyrics_file))
         lyrics_model.catalog.tokenize_catalog()
 
     return models
