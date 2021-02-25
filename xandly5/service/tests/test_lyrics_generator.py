@@ -1,10 +1,10 @@
-import unittest
 import hashlib
+import unittest
 
 from ptmlib.time import Stopwatch
 
-from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.service.lyrics_generator import LyricsGenerator
+from xandly5.types.lyrics_model_enum import LyricsModelEnum
 
 
 class LyricsGeneratorTestCase(unittest.TestCase):
@@ -40,7 +40,8 @@ class LyricsGeneratorTestCase(unittest.TestCase):
         # ACT, ASSERT
         self.generate_lyrics_for_test(expected_lyrics_file, model_id, seed_text, word_count, word_group_count)
 
-    def generate_lyrics_for_test(self, expected_lyrics_file, model_id, seed_text, word_count, word_group_count):
+    def generate_lyrics_for_test(self, expected_lyrics_file: str, model_id: LyricsModelEnum, seed_text: str,
+                                 word_count: int, word_group_count: int) -> None:
 
         # ACT
         stopwatch = Stopwatch()

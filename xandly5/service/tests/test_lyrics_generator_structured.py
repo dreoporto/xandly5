@@ -1,13 +1,14 @@
+import hashlib
+import re
 import unittest
 from typing import List
-import hashlib
 
 from ptmlib.time import Stopwatch
 
+from xandly5.service.lyrics_generator import LyricsGenerator
+from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.lyrics_section import LyricsSection
 from xandly5.types.section_type_enum import SectionTypeEnum
-from xandly5.types.lyrics_model_enum import LyricsModelEnum
-from xandly5.service.lyrics_generator import LyricsGenerator
 
 
 class LyricsGeneratorStructuredTestCase(unittest.TestCase):
@@ -47,13 +48,35 @@ class LyricsGeneratorStructuredTestCase(unittest.TestCase):
         model_id = LyricsModelEnum.POE_POEM
 
         lyrics_sections = self._get_lyrics_sections()
-        total_word_count: int = sum([s.word_count for s in lyrics_sections])
+
+        # ACT, ASSERT
+        self.generate_lyrics_for_test(expected_lyrics_file, lyrics_sections, model_id)
+
+    def test_generate_structured_lyrics_independent_sections(self):
+
+        # ARRANGE
+        expected_lyrics_file = 'expected_sonnet_struct_lyrics.txt'
+        model_id = LyricsModelEnum.SONNETS
+
+        lyrics_sections = self._get_lyrics_sections()
+
+        # ACT, ASSERT
+        self.generate_lyrics_for_test(expected_lyrics_file, lyrics_sections, model_id, independent_sections=True)
+
+    def generate_lyrics_for_test(self, expected_lyrics_file: str, lyrics_sections: List[LyricsSection],
+                                 model_id: LyricsModelEnum, independent_sections: bool = False) -> None:
 
         # ACT
         stopwatch = Stopwatch()
         stopwatch.start()
         generator = LyricsGenerator(model_id)
-        lyrics = generator.generate_lyrics_from_sections(lyrics_sections)
+
+        lyrics: str
+        if independent_sections:
+            lyrics = generator.generate_lyrics_from_independent_sections(lyrics_sections)
+        else:
+            lyrics = generator.generate_lyrics_from_sections(lyrics_sections)
+
         stopwatch.stop()
 
         # ASSERT
@@ -63,7 +86,9 @@ class LyricsGeneratorStructuredTestCase(unittest.TestCase):
         with open(expected_lyrics_file, 'r') as file:
             expected_lyrics = file.read()
 
-        clean_lyrics = lyrics.strip().replace('  ', ' ').replace(',', '')  # removes unnecessary chars
+        clean_lyrics = re.sub('--[A-Z]+--', '', lyrics)  # remove section headers
+        clean_lyrics = clean_lyrics.strip().replace('  ', ' ').replace(',', '')  # removes unnecessary chars
+        total_word_count: int = sum([s.word_count for s in lyrics_sections])
 
         self.assertEqual(total_word_count, len(clean_lyrics.split(' ')))
         for section in lyrics_sections:
