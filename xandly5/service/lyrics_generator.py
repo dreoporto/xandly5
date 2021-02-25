@@ -114,32 +114,6 @@ def speak_lyrics(lyrics: str):
     engine.stop()
 
 
-def create_sonnet():
-    stopwatch = Stopwatch()
-    lyrics = 'evening fountains lit loss'
-
-    stopwatch.start()
-    generator = LyricsGenerator(LyricsModelEnum.SONNETS)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=8, word_count=96)
-    print(lyrics)
-    stopwatch.stop()
-
-    speak_lyrics(lyrics)
-
-
-def create_poe_poem():
-    stopwatch = Stopwatch()
-    lyrics = 'deep sleep the oasis'
-
-    stopwatch.start()
-    generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
-    lyrics = generator.generate_lyrics(lyrics, word_group_count=4, word_count=104)
-    print(lyrics)
-    stopwatch.stop()
-
-    speak_lyrics(lyrics)
-
-
 def create_structured_lyrics():
     stopwatch = Stopwatch()
     sections: List[LyricsSection] = [
@@ -170,8 +144,6 @@ def create_structured_lyrics():
 
 
 def main():
-    # create_sonnet()
-    # create_poe_poem()
     create_structured_lyrics()
 
 
