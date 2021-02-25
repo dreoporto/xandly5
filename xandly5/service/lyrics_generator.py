@@ -97,7 +97,8 @@ class LyricsGenerator:
         return ' '.join(end_words_array)
 
 
-# TODO AEO MOVE THIS OUT
+# TODO AEO REMOVE ALL CODE BELOW THIS LINE
+
 def speak_lyrics(lyrics: str):
     import pyttsx3
 
