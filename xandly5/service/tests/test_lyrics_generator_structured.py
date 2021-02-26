@@ -24,7 +24,7 @@ class LyricsGeneratorStructuredTestCase(unittest.TestCase):
     def _get_lyrics_sections() -> List[LyricsSection]:
         sections: List[LyricsSection] = [
             LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                          seed_text='a dreary midnight bird and here i heard'),
+                          seed_text='a dreary  midnight   bir!d and here </> i heard'),
             LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
                           seed_text='said he art too seas for totter into'),
             LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,

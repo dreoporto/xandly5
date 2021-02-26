@@ -1,16 +1,16 @@
-from typing import Dict, List
-import re
 import os
+import re
+from typing import Dict, List
 
+from ptmlib.time import Stopwatch
 from tensorflow import keras
 
 from xandly5.ai_ml_model.catalog import Catalog
 from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
-from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
+from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_section import LyricsSection
 from xandly5.types.section_type_enum import SectionTypeEnum
-from ptmlib.time import Stopwatch
 
 
 def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModelMeta]:
@@ -44,7 +44,15 @@ class LyricsGenerator:
         print('init LyricsGenerator instance')
         self.model_meta: LyricsModelMeta = _lyrics_models[model_id]
 
+    @staticmethod
+    def _clean_seed_text(seed_text: str) -> str:
+        seed_text = re.sub('[^A-Za-z0-9 ]+', '', seed_text)  # alphanumeric only
+        seed_text = re.sub(' +', ' ', seed_text)  # replace repeating spaces with one space
+        seed_text = seed_text.strip()
+        return seed_text
+
     def generate_lyrics(self, seed_text: str, word_group_count: int, word_count: int) -> str:
+        seed_text = self._clean_seed_text(seed_text)
         lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=word_count)
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
         return lyrics_text
@@ -52,11 +60,9 @@ class LyricsGenerator:
     def generate_lyrics_from_independent_sections(self, lyrics_sections: List[LyricsSection]) -> str:
         lyrics_text = ''
 
-        # TODO AEO clean up seed_text to avoid issues
-        # create unit tests to confirm word counts and seed text for each section
-
         for section in lyrics_sections:
-            section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text.strip(),
+            section.seed_text = self._clean_seed_text(section.seed_text)
+            section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text,
                                                                           word_count=section.word_count)
             section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
                                                                    word_group_count=section.word_group_count)
@@ -73,11 +79,12 @@ class LyricsGenerator:
         for section in lyrics_sections:
 
             total_word_count += section.word_count
+            section.seed_text = self._clean_seed_text(section.seed_text)
 
             # use current lyrics as seed text
             if lyrics_text != '':
                 lyrics_text += ' '
-            lyrics_text += section.seed_text.strip()
+            lyrics_text += section.seed_text
             lyrics_text = self.model_meta.generate_lyrics_text(seed_text=lyrics_text,
                                                                word_count=total_word_count)
             # get section text from lyrics, then format
