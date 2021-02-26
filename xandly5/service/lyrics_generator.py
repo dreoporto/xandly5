@@ -46,7 +46,7 @@ class LyricsGenerator:
 
     @staticmethod
     def _clean_seed_text(seed_text: str) -> str:
-        seed_text = re.sub('[^A-Za-z0-9 ]+', '', seed_text)  # alphanumeric only
+        seed_text = re.sub('[^A-Za-z0-9 \']+', '', seed_text)  # alphanumeric and ' only
         seed_text = re.sub(' +', ' ', seed_text)  # replace repeating spaces with one space
         seed_text = seed_text.strip()
         return seed_text

@@ -28,6 +28,19 @@ class LyricsGeneratorTestCase(unittest.TestCase):
         # ACT, ASSERT
         self.generate_lyrics_for_test(expected_lyrics_file, model_id, seed_text, word_count, word_group_count)
 
+    def test_generate_sonnet_lyrics_error(self):
+
+        # ARRANGE
+        word_count = 96
+        word_group_count = 8
+        seed_text = 'evening fountains li\'t loss'
+        expected_lyrics_file = 'expected_sonnet_lyrics.txt'
+        model_id = LyricsModelEnum.SONNETS
+
+        # ACT, ASSERT
+        self.assertRaises(AssertionError, self.generate_lyrics_for_test, expected_lyrics_file, model_id, seed_text,
+                          word_count, word_group_count)
+
     def test_generate_poe_lyrics(self):
 
         # ARRANGE
