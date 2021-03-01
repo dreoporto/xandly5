@@ -5,3 +5,5 @@ numpy==1.19.2
 pandas==1.2.1
 playsound==1.2.2
 tensorflow==2.4.1
+scikit-learn==0.24.1
+pyttsx3==2.90
