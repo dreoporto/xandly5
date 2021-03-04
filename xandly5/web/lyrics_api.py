@@ -1,5 +1,5 @@
 
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 from flask_restful import Resource, Api
 
 from xandly5.service.lyrics_generator import LyricsGenerator
@@ -9,26 +9,37 @@ app = Flask(__name__)
 api = Api(app)
 
 
+def make_error(status_code: int, message: str):
+    response = jsonify({
+        'status': status_code,
+        'message': message
+    })
+    response.status_code = status_code
+    return response
+
+
 # noinspection PyMethodMayBeStatic
 class LyricsApi(Resource):
 
     def post(self):
-        json_values = request.json
+        try:
+            json_values = request.json
 
-        # TODO AEO add validation
-        model_id: LyricsModelEnum = json_values['model_id']
-        seed_text: str = json_values['seed_text']
-        word_count: int = json_values['word_count']
-        word_group_count: int = json_values['word_group_count']
+            model_id: LyricsModelEnum = json_values['model_id']
+            seed_text: str = json_values['seed_text']
+            word_count: int = json_values['word_count']
+            word_group_count: int = json_values['word_group_count']
 
-        generator = LyricsGenerator(model_id)
-        lyrics = generator.generate_lyrics(seed_text=seed_text, word_count=word_count,
-                                           word_group_count=word_group_count)
+            generator = LyricsGenerator(model_id)
+            lyrics = generator.generate_lyrics(seed_text=seed_text, word_count=word_count,
+                                               word_group_count=word_group_count)
 
-        response = make_response(lyrics, 200)
-        response.mimetype = "text/plain"
+            response = make_response(lyrics, 200)
+            response.mimetype = "text/plain"
 
-        return response
+            return response
+        except ValueError as ve:
+            return make_error(400, str(ve))
 
 
 api.add_resource(LyricsApi, '/lyrics-api')
