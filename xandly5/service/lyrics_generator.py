@@ -65,9 +65,15 @@ class LyricsGenerator:
         if word_group_count > MAX_WORDS_GENERATED:
             raise ValidationError(f'Word Group Count cannot exceed {MAX_WORDS_GENERATED}')
 
+    def _clean_and_validate_lyrics_sections(self, lyrics_sections: List[LyricsSection]) -> None:
+        for section in lyrics_sections:
+            section.seed_text = self._clean_seed_text(section.seed_text)
+            self._validate_lyrics_options(seed_text=section.seed_text, word_group_count=section.word_group_count,
+                                          word_count=section.word_count)
+
     def generate_lyrics(self, seed_text: str, word_group_count: int, word_count: int) -> str:
         seed_text = self._clean_seed_text(seed_text)
-        self._validate_lyrics_options(seed_text, word_group_count, word_count)
+        self._validate_lyrics_options(seed_text=seed_text, word_group_count=word_group_count, word_count=word_count)
         lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=word_count)
         lyrics_text = LyricsFormatter.format_lyrics(lyrics_text, word_group_count=word_group_count)
         return lyrics_text
@@ -75,8 +81,9 @@ class LyricsGenerator:
     def generate_lyrics_from_independent_sections(self, lyrics_sections: List[LyricsSection]) -> str:
         lyrics_text = ''
 
+        self._clean_and_validate_lyrics_sections(lyrics_sections)
+
         for section in lyrics_sections:
-            section.seed_text = self._clean_seed_text(section.seed_text)
             section.generated_text = self.model_meta.generate_lyrics_text(seed_text=section.seed_text,
                                                                           word_count=section.word_count)
             section.generated_text = LyricsFormatter.format_lyrics(section.generated_text,
@@ -91,10 +98,10 @@ class LyricsGenerator:
         formatted_lyrics_text = ''
         total_word_count = 0
 
-        for section in lyrics_sections:
+        self._clean_and_validate_lyrics_sections(lyrics_sections)
 
+        for section in lyrics_sections:
             total_word_count += section.word_count
-            section.seed_text = self._clean_seed_text(section.seed_text)
 
             # use current lyrics as seed text
             if lyrics_text != '':
