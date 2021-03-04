@@ -4,6 +4,7 @@ from flask_restful import Resource, Api
 
 from xandly5.service.lyrics_generator import LyricsGenerator
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
+from xandly5.types.validation_error import ValidationError
 
 app = Flask(__name__)
 api = Api(app)
@@ -38,7 +39,7 @@ class LyricsApi(Resource):
             response.mimetype = "text/plain"
 
             return response
-        except ValueError as ve:
+        except ValidationError as ve:
             return make_error(400, str(ve))
 
 

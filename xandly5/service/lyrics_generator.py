@@ -11,6 +11,7 @@ from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_section import LyricsSection
 from xandly5.types.section_type_enum import SectionTypeEnum
+from xandly5.types.validation_error import ValidationError
 
 
 def _load_lyrics_models() -> Dict[LyricsModelEnum, LyricsModelMeta]:
@@ -58,11 +59,11 @@ class LyricsGenerator:
     @staticmethod
     def _validate_lyrics_options(seed_text: str, word_group_count: int, word_count: int) -> None:
         if len(seed_text) > MAX_SEED_TEXT_LENGTH:
-            raise ValueError(f'Seed Text cannot exceed {MAX_SEED_TEXT_LENGTH} characters')
+            raise ValidationError(f'Seed Text cannot exceed {MAX_SEED_TEXT_LENGTH} characters')
         if word_count > MAX_WORDS_GENERATED:
-            raise ValueError(f'Word Count cannot exceed {MAX_WORDS_GENERATED} words')
+            raise ValidationError(f'Word Count cannot exceed {MAX_WORDS_GENERATED}')
         if word_group_count > MAX_WORDS_GENERATED:
-            raise ValueError(f'Word Group Count cannot exceed {MAX_WORDS_GENERATED}')
+            raise ValidationError(f'Word Group Count cannot exceed {MAX_WORDS_GENERATED}')
 
     def generate_lyrics(self, seed_text: str, word_group_count: int, word_count: int) -> str:
         seed_text = self._clean_seed_text(seed_text)
