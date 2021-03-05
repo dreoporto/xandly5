@@ -5,7 +5,7 @@ import unittest
 
 from ptmlib.time import Stopwatch
 
-from xandly5.service.lyrics_generator import LyricsGenerator, MAX_WORDS_GENERATED, MAX_SEED_TEXT_LENGTH
+from xandly5.service.lyrics_generator import LyricsGenerator
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.validation_error import ValidationError
 
@@ -72,16 +72,17 @@ class LyricsGeneratorTestCase(unittest.TestCase):
     def test_generate_word_count_error(self):
 
         self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
-                          LyricsModelEnum.SONNETS, 'hello', MAX_WORDS_GENERATED + 1, 1)
+                          LyricsModelEnum.SONNETS, 'hello', LyricsGenerator.max_words_generated + 1, 1)
 
     def test_generate_word_group_count_error(self):
 
         self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
-                          LyricsModelEnum.SONNETS, 'hello', 1, MAX_WORDS_GENERATED + 1)
+                          LyricsModelEnum.SONNETS, 'hello', 1, LyricsGenerator.max_words_generated + 1)
 
     def test_generate_max_seed_text_error(self):
 
-        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=MAX_SEED_TEXT_LENGTH+1))
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits,
+                                               k=LyricsGenerator.max_seed_text_length+1))
 
         self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
                           LyricsModelEnum.SONNETS, random_string, 1, 1)

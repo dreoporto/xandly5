@@ -1,0 +1,5 @@
+{
+    "max_seed_text_length": 1000,
+    "max_words_generated": 200,
+    "max_lyrics_sections": 20
+}
