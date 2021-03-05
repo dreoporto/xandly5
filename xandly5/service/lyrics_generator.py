@@ -41,6 +41,7 @@ _lyrics_models = _load_lyrics_models()
 # validation settings
 MAX_SEED_TEXT_LENGTH = 1000
 MAX_WORDS_GENERATED = 200
+MAX_LYRICS_SECTIONS = 20
 
 
 class LyricsGenerator:
@@ -66,6 +67,8 @@ class LyricsGenerator:
             raise ValidationError(f'Word Group Count cannot exceed {MAX_WORDS_GENERATED}')
 
     def _clean_and_validate_lyrics_sections(self, lyrics_sections: List[LyricsSection]) -> None:
+        if len(lyrics_sections) > MAX_LYRICS_SECTIONS:
+            raise ValidationError(f'Total number of Lyrics Sections cannot exceed {MAX_LYRICS_SECTIONS}')
         for section in lyrics_sections:
             section.seed_text = self._clean_seed_text(section.seed_text)
             self._validate_lyrics_options(seed_text=section.seed_text, word_group_count=section.word_group_count,

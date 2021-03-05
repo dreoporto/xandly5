@@ -5,10 +5,11 @@ from typing import List
 
 from ptmlib.time import Stopwatch
 
-from xandly5.service.lyrics_generator import LyricsGenerator
+from xandly5.service.lyrics_generator import LyricsGenerator, MAX_LYRICS_SECTIONS, MAX_WORDS_GENERATED
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.lyrics_section import LyricsSection
 from xandly5.types.section_type_enum import SectionTypeEnum
+from xandly5.types.validation_error import ValidationError
 
 
 class LyricsGeneratorStructuredTestCase(unittest.TestCase):
@@ -62,6 +63,27 @@ class LyricsGeneratorStructuredTestCase(unittest.TestCase):
 
         # ACT, ASSERT
         self.generate_lyrics_for_test(expected_lyrics_file, lyrics_sections, model_id, independent_sections=True)
+
+    def test_generate_structured_lyrics_error(self):
+
+        lyrics_sections: List[LyricsSection] = []
+        for _ in range(0, MAX_LYRICS_SECTIONS + 1):
+            lyrics_sections.append(
+                LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=20,
+                              seed_text='hello')
+            )
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_sonnet_struct_lyrics.txt',
+                          lyrics_sections, LyricsModelEnum.SONNETS, True)
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_sonnet_struct_lyrics.txt',
+                          lyrics_sections, LyricsModelEnum.SONNETS, False)
+
+        short_list = lyrics_sections[0:1]
+        short_list[0].word_count = MAX_WORDS_GENERATED + 1
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_sonnet_struct_lyrics.txt',
+                          short_list, LyricsModelEnum.SONNETS, False)
 
     def generate_lyrics_for_test(self, expected_lyrics_file: str, lyrics_sections: List[LyricsSection],
                                  model_id: LyricsModelEnum, independent_sections: bool = False) -> None:
