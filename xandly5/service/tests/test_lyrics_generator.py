@@ -1,14 +1,16 @@
 import hashlib
+import random
+import string
 import unittest
 
 from ptmlib.time import Stopwatch
 
-from xandly5.service.lyrics_generator import LyricsGenerator
+from xandly5.service.lyrics_generator import LyricsGenerator, MAX_WORDS_GENERATED, MAX_SEED_TEXT_LENGTH
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
+from xandly5.types.validation_error import ValidationError
 
 
 class LyricsGeneratorTestCase(unittest.TestCase):
-
     # ENABLE THIS WHEN CREATING NEW TESTS
     WRITE_LYRICS_FILES: bool = False
 
@@ -66,6 +68,23 @@ class LyricsGeneratorTestCase(unittest.TestCase):
         # ACT, ASSERT
         self.generate_lyrics_for_test(expected_lyrics_file, model_id, seed_text, word_count, word_group_count,
                                       starts_with_text=starts_with_text)
+
+    def test_generate_word_count_error(self):
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
+                          LyricsModelEnum.SONNETS, 'hello', MAX_WORDS_GENERATED + 1, 1)
+
+    def test_generate_word_group_count_error(self):
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
+                          LyricsModelEnum.SONNETS, 'hello', 1, MAX_WORDS_GENERATED + 1)
+
+    def test_generate_max_seed_text_error(self):
+
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=MAX_SEED_TEXT_LENGTH+1))
+
+        self.assertRaises(ValidationError, self.generate_lyrics_for_test, 'expected_poe_lyrics.txt',
+                          LyricsModelEnum.SONNETS, random_string, 1, 1)
 
     def generate_lyrics_for_test(self, expected_lyrics_file: str, model_id: LyricsModelEnum, seed_text: str,
                                  word_count: int, word_group_count: int, starts_with_text: str = None) -> None:
