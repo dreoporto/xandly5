@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, render_template
 from flask_marshmallow import Marshmallow, fields
 from marshmallow import post_load
 from flask_restful import Resource, Api
@@ -44,7 +44,6 @@ class LyricsApi(Resource):
     def post(self):
         try:
             json_values = request.json
-
             model_id: LyricsModelEnum = json_values['model_id']
             seed_text: str = json_values['seed_text']
             word_count: int = json_values['word_count']
@@ -93,6 +92,12 @@ class StructuredLyricsApi(Resource):
 
 api.add_resource(LyricsApi, '/lyrics-api')
 api.add_resource(StructuredLyricsApi, '/structured-lyrics-api')
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=False)  # enabling debug causes CUDNN errors

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Xandly5</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="static/css/style.css"/>
+</head>
+<body>
+
+<div id="content" class="container-fluid">
+
+    <form>
+        <h1>Xandly5</h1>
+        <h2>The Deep Learning Lyrics Generator</h2>
+
+        <div class="form-group">
+            <label for="model_id">Lyrics Model:</label>
+            <select id="model_id" class="form-control">
+                <option value="1">Shakespeare Sonnet</option>
+                <option value="2">Poe Poem</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="seed_text">Starting Text:</label>
+            <input type="text" class="form-control" id="seed_text" value="tis a cook book"/>
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                <label for="word_count">Word Count:</label>
+                <input type="text" class="form-control" id="word_count" value="40"/>
+            </div>
+            <div class="form-group col">
+                <label for="word_group_count">Word Group Count:</label>
+                <input type="text" class="form-control" id="word_group_count" value="4"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" id="main_button" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="form-group">
+            <label for="generated_text">Generated Text:</label>
+            <textarea class="form-control" id="generated_text" rows="15"></textarea>
+        </div>
+    </form>
+
+</div>
+
+<script src="static/scripts/jquery-3.6.0.min.js"></script>
+<script src="static/scripts/bootstrap.bundle.min.js"></script>
+<script src="static/scripts/xandly5.js">
+
+</script>
+</body>
+</html>
