@@ -1,3 +1,11 @@
 body {
     margin: 5px;
 }
+
+.page-header {
+    border: 3px solid #cadef9;
+    padding: 10px 0 20px 40px;
+    margin: 0 0 20px 0;
+    border-radius: 15px;
+    background-color: whitesmoke;
+}

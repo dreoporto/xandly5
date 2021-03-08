@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Xandly5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="stylesheet" href="static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="static/css/style.css"/>
+
+    <title>Xandly5</title>
 </head>
 <body>
 
 <div id="content" class="container-fluid">
 
     <form>
-        <h1>Xandly5</h1>
-        <h2>The Deep Learning Lyrics Generator</h2>
-
+        <div class="page-header container-fluid">
+            <h1 class="display-4">Xandly5</h1>
+            <h2>The Deep Learning Lyrics Generator</h2>
+        </div>
         <div class="form-group">
             <label for="model_id">Lyrics Model:</label>
             <select id="model_id" class="form-control">
@@ -23,7 +27,7 @@
         </div>
         <div class="form-group">
             <label for="seed_text">Starting Text:</label>
-            <input type="text" class="form-control" id="seed_text" value="tis a cook book"/>
+            <textarea class="form-control" id="seed_text" rows="2">tis a cook book</textarea>
         </div>
         <div class="row">
             <div class="form-group col">
@@ -40,7 +44,7 @@
         </div>
         <div class="form-group">
             <label for="generated_text">Generated Text:</label>
-            <textarea class="form-control" id="generated_text" rows="15"></textarea>
+            <textarea class="form-control" id="generated_text" rows="12"></textarea>
         </div>
     </form>
 
