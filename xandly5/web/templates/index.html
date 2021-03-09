@@ -40,7 +40,13 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="button" id="main_button" class="btn btn-primary">Submit</button>
+            <button type="button" id="main_button" class="btn btn-primary">
+                Submit
+                <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div id="alert_message" class="alert alert-warning collapse" role="alert">
+            Nothing to see here...
         </div>
         <div class="form-group">
             <label for="generated_text">Generated Text:</label>

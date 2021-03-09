@@ -1,6 +1,9 @@
 function submitForm(){
 
-    $("#generated_text").text("Processing request...")
+    $("#generated_text").text("Processing...")
+    $("#main_button").prop("disabled", true);
+    $('#spinner').removeClass("d-none");
+    $('#alert_message').hide();
 
     lyricsRequest = {
         model_id: parseInt($("#model_id").val()),
@@ -18,11 +21,22 @@ function submitForm(){
         data: JSON.stringify(lyricsRequest),
         contentType: 'application/json',
         type: 'POST',
-        success: function(xhr){ $("#generated_text").text(xhr); }
+        success: function(xhr){
+            $('#spinner').addClass("d-none");
+            $("#generated_text").text(xhr);
+            $("#main_button").prop("disabled", false);
+        },
+        error: function(xhr){
+            $("#generated_text").text('');
+            $('#alert_message').text(xhr.responseJSON.message);
+            $('#alert_message').show();
+            $('#spinner').addClass("d-none");
+            $("#main_button").prop("disabled", false);
+        }
     });
 }
 
-//TODO AEO TEMP - basic code for now; no validation or wait spinner
+//TODO AEO TEMP - add UI validations
 $("#main_button").click(function(){
     submitForm();
 });
