@@ -52,6 +52,8 @@ class LyricsGenerator:
     max_lyrics_sections = int(_config['max_lyrics_sections'])
 
     def __init__(self, model_id: LyricsModelEnum):
+        if model_id not in _lyrics_models:
+            raise ValidationError(f'Invalid Model Id: {model_id}')
         print('init LyricsGenerator instance')
         self.model_meta: LyricsModelMeta = _lyrics_models[model_id]
 
@@ -63,6 +65,10 @@ class LyricsGenerator:
         return seed_text
 
     def _validate_lyrics_options(self, seed_text: str, word_group_count: int, word_count: int) -> None:
+        if not isinstance(word_count, int):
+            raise ValidationError(f'Word Count value is invalid')
+        if not isinstance(word_group_count, int):
+            raise ValidationError(f'Word Group Count value is invalid')
         if len(seed_text) > self.max_seed_text_length:
             raise ValidationError(f'Seed Text cannot exceed {self.max_seed_text_length} characters')
         if word_count > self.max_words_generated:
