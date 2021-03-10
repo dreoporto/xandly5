@@ -3,7 +3,6 @@ import os
 import re
 from typing import Dict, List
 
-from ptmlib.time import Stopwatch
 from tensorflow import keras
 
 from xandly5.ai_ml_model.catalog import Catalog
@@ -11,7 +10,6 @@ from xandly5.ai_ml_model.lyrics_formatter import LyricsFormatter
 from xandly5.types.lyrics_model_enum import LyricsModelEnum
 from xandly5.types.lyrics_model_meta import LyricsModelMeta
 from xandly5.types.lyrics_section import LyricsSection
-from xandly5.types.section_type_enum import SectionTypeEnum
 from xandly5.types.validation_error import ValidationError
 
 
@@ -137,58 +135,3 @@ class LyricsGenerator:
         text_array = text.split(' ')
         end_words_array = text_array[word_count * -1:]
         return ' '.join(end_words_array)
-
-
-# TODO AEO REMOVE ALL CODE BELOW THIS LINE
-
-def speak_lyrics(lyrics: str):
-    import pyttsx3
-
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-
-    engine.setProperty('rate', 160)
-    # noinspection PyUnresolvedReferences
-    engine.setProperty('voice', voices[1].id)
-
-    engine.say(lyrics)
-
-    engine.runAndWait()
-    engine.stop()
-
-
-def create_structured_lyrics():
-    stopwatch = Stopwatch()
-    sections: List[LyricsSection] = [
-        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                      seed_text='a dreary midnight bird and here i heard'),
-        LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
-                      seed_text='said he art too seas for totter into'),
-        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                      seed_text='tone of his eyes of night litten have'),
-        LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
-                      seed_text='said he art too seas for totter into'),
-        LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                      seed_text='answer step only blows of their harp string'),
-        LyricsSection(section_type=SectionTypeEnum.BRIDGE, word_group_count=4, word_count=20,
-                      seed_text='said he art too'),
-        LyricsSection(section_type=SectionTypeEnum.OUTRO, word_group_count=4, word_count=16,
-                      seed_text='said he art too seas for totter into'),
-    ]
-
-    stopwatch.start()
-    generator = LyricsGenerator(LyricsModelEnum.POE_POEM)
-    lyrics = generator.generate_lyrics_from_sections(sections)
-    print(lyrics)
-    stopwatch.stop()
-
-    lyrics = re.sub('--[A-Z]+--', '', lyrics)
-    speak_lyrics(lyrics)
-
-
-def main():
-    create_structured_lyrics()
-
-
-if __name__ == '__main__':
-    main()

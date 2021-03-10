@@ -12,10 +12,6 @@ function submitForm(){
         word_group_count: parseInt($("#word_group_count").val())
     };
 
-    //TODO AEO TEMP
-    //debugger;
-    console.log(JSON.stringify(lyricsRequest));
-
     $.ajax({
         url: '/lyrics-api',
         data: JSON.stringify(lyricsRequest),
@@ -36,7 +32,6 @@ function submitForm(){
     });
 }
 
-//TODO AEO TEMP - add UI validations
 $("#main_button").click(function(){
     submitForm();
 });
