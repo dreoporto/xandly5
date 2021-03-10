@@ -3,9 +3,18 @@ body {
 }
 
 .page-header {
-    border: 3px solid #cadef9;
     padding: 10px 0 20px 40px;
     margin: 0 0 20px 0;
-    border-radius: 15px;
-    background-color: whitesmoke;
+    border-radius: 5px;
+    background-color: #28527a;
+    color: white;
+    box-shadow: 5px 5px 2px #8ac4d0;
+}
+
+h1 {
+    font-weight:700;
+}
+
+h2 {
+    font-size:1.5em;
 }
