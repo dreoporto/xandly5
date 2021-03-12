@@ -15,7 +15,7 @@ def tensorflow_diagnostics():
     print('keras version:', keras.__version__)
 
 
-class LyricsModelGenerator:
+class LyricsModel:
 
     def __init__(self, config_file):
         with open(config_file) as json_file:

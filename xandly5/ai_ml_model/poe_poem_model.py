@@ -1,10 +1,10 @@
 
-import lyrics_model_generator as lmg
+import lyrics_model as lm
 
 
 def main():
-    lmg.tensorflow_diagnostics()
-    lyrics_model = lmg.LyricsModelGenerator('poe_poem_config.json')
+    lm.tensorflow_diagnostics()
+    lyrics_model = lm.LyricsModel('poe_poem_config.json')
     lyrics_model.generate_model()
 
 

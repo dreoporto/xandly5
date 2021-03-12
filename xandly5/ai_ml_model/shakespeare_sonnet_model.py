@@ -1,9 +1,9 @@
 
-import lyrics_model_generator as lmg
+import lyrics_model as lm
 from tensorflow import keras
 
 
-class ShakespeareSonnetModelGenerator(lmg.LyricsModelGenerator):
+class ShakespeareSonnetModel(lm.LyricsModel):
 
     def __init__(self, config_file: str):
         super().__init__(config_file)
@@ -27,8 +27,8 @@ class ShakespeareSonnetModelGenerator(lmg.LyricsModelGenerator):
 
 
 def main():
-    lmg.tensorflow_diagnostics()
-    lyrics_model = ShakespeareSonnetModelGenerator('shakespeare_sonnet_config.json')
+    lm.tensorflow_diagnostics()
+    lyrics_model = ShakespeareSonnetModel('shakespeare_sonnet_config.json')
     lyrics_model.generate_model()
 
 
