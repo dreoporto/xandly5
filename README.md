@@ -48,11 +48,12 @@ The output for each of these models are in lyrics that can be considered imperfe
 
 Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  Thank goodness.  Humanity needs them, now and always.  Especially now.
 
-`TODO PICTURE?`
-
 ## Xandly5 Architecture 
 
-`![Xandly5 Architecture Diagram](Xandly5-Architecture.svg)`
+<!--![Xandly5 Architecture Diagram](images/Xandly5-Architecture.svg)-->
+<p align="center">
+    <a href="images/Xandly5-Architecture.svg"><img src="images/Xandly5-Architecture.svg" width="60%"></a>
+</p>
 
 ## AI ML Model
 
