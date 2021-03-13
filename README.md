@@ -52,7 +52,7 @@ Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  
 
 <!--![Xandly5 Architecture Diagram](images/Xandly5-Architecture.svg)-->
 <p align="center">
-    <a href="images/Xandly5-Architecture.svg"><img src="images/Xandly5-Architecture.svg" width="60%"></a>
+    <a href="https://raw.githubusercontent.com/dreoporto/xandly5/main/images/Xandly5-Architecture.svg" target="_blank"><img src="images/Xandly5-Architecture.svg" width="60%"></a>
 </p>
 
 ## AI ML Model
