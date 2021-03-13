@@ -19,13 +19,13 @@ To ensure we respect copyrights, all lyrics used to train models are from public
 
 ### Keras and TensorFlow NLP Models
 
-The NLP models in Xandly5 are currently Keras Sequential models with Embedding and Bidirectional Long Short-Term Memory (LSTM) layers.  This allows models to take starter text (aka seed text) specified by the user and predict the next set of words in a song or poem.  The LSTM layer is a Recurrent Neural Network layer that maintains memory, so that a word later in a song is influenced by earlier words.  The bidirectional capability enhances this functionality.
+The NLP models in Xandly5 are currently Keras Sequential models with Embedding and Bidirectional Long Short-Term Memory (LSTM) layers.  This allows models to take starter text specified by the user and predict the next set of words.  The LSTM layer is a Recurrent Neural Network layer that maintains memory, so that a word later in a song is influenced by earlier words.  The bidirectional capability enhances this functionality.
 
-The modular nature of Xandly5 allows us to add additional models which may use other types of layers and Deep Learning technologies.
+The modular design of Xandly5 allows us to add additional models, which can leverage other Deep Learning layers, techniques, and frameworks.
 
 ### Catalog class
 
-The Catalog class uses the Keras Tokenizer to generate multiple N-gram sequences for each lyric line.  An example of a N-gram sequence from one line of poetry, with corresponding text:
+The Keras Tokenizer is used to generate multiple N-gram sequences for each lyric line.  An example of a N-gram sequence from one line of poetry, with corresponding text:
 
 ```
 LINE: once upon a midnight dreary
@@ -38,74 +38,81 @@ N-GRAM                          CORRESPONDING TEXT
 
 ```
 
-The tokenizer is fitted on all lyrics associated with the catalog, and then generates and pads multiple n-gram sequences for each line.  The tokenizer converts each word in the catalog to a number.  We use a separate `Catalog` class to reuse this functionality for both model training and later predictions, since the tokenizer *with consistent tokens* is required as part of both processes.
+The tokenizer is fitted on all lyrics associated with the catalog, and then generates and pads multiple n-gram sequences for each line.  The tokenizer converts each word in the catalog to a number.  
 
-We train models to predict the last word for each sequence (ex: *upon* in the first example above, and *dreary* in the last).  Sequences are split into training and validation groups so that we can graph performance and identify issues with over- and under-fitting.  Xandly5 makes use of the PTMLib library, including Timer and Charts.
+The `Catalog` class in Xandly5 allows us to reuse this functionality for both model training and *later predictions* for word generation, since a tokenizer with consistent vocabulary and settings is required as part of both processes.
+
+We train models to predict the last word for each sequence (ex: *upon* in the first example above, and *dreary* in the last).  Sequences are split into training and validation groups so that we can graph performance and identify issues with over- and under-fitting.  Xandly5 makes use of the `Stopwatch` and `charts` modules from the [PTMLib](https://github.com/dreoporto/ptmlib) library.
 
 ### Model Output
 
-The output for each of these models are in lyrics that can be considered imperfect yet hopefully inspirational, and consistent with each model's genre thanks to the word selections/predictions.  Xandly5 output is not random, otherwise we would get different gibberish with each submission.  The same exact input to the same model with the same word count and grouping parameters will produce the same output, which can then be used a springboard for lyric ideas.  
+The lyrics produced by these models can be considered imperfect yet hopefully inspirational.  They are consistent with each model genre thanks to the word predictions; sometimes they rhyme.  Xandly5 output is not random, since this would produce different results with each submission.  The same exact text input to the same model, with the same word count and grouping parameters, will produce the same output, which can then be used as a springboard for ideas.  
 
 Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  Thank goodness.  Humanity needs them, now and always.  Especially now.
 
 ## Xandly5 Architecture 
 
-<!--![Xandly5 Architecture Diagram](images/Xandly5-Architecture.svg)-->
+<!--TODO change link when repo is public-->
 <p align="center">
-    <a href="images/Xandly5-Architecture.svg"><img src="images/Xandly5-Architecture.svg" width="60%"></a>
+    <a href="images/Xandly5-Architecture.svg"><img src="images/Xandly5-Architecture.svg" width="90%"></a>
 </p>
 
-## AI ML Model
+## `ai_ml_model`
 
-This module contains all code and files for generating models, and making word predictions.  Models are saved as H5 files.
+This module contains all code and files for generating models and making word predictions.
 
-- `Catalog`
-    - used in model training
-    - also used by the LyricsGenerator Service 
-    - `catalog_items` stores all lyrics lines for a corpus (collection of works, i.e. Sonnets)
-    - `tokenizer` is used in both model training and prediction stages
-    - `generate_lyrics_text` - generates lyrics using the associated tokenizer
-- `LyricsModel` trains models and saves them as H5 files; specific child models include:
+### `LyricsModel` - Trains models and saves them as H5 files
+
+- Specific child models currently included:
     - `SharespearSonnetModel`
     - `PoePoemModel`
-    - Each child model has an asscoated `*_config.json` with hyperparameter settings
-    - Each child model can be executed to save your own custom H5 models.  
-    - We recommend downloading our saved H5 models as part of the setup instructions below.
-- `LyricsFormatter` is used to generate formatted lyrics that are more readable
+- Each child model has an associated `*_config.json` with hyperparameter settings
+- Each child model can be executed to save your own custom H5 models
+- We recommend downloading the H5 models per the setup instructions below
+
+### `Catalog`
+
+- Used for both model training, and prediction (via the `LyricsGenerator` service)
+- `catalog_items` stores all lyrics for a corpus (i.e. collection of works)
+- `generate_lyrics_text` - generates lyrics using the Catalog's associated tokenizer
+
+### Additional Items
+- `LyricsFormatter` - used to produce formatted lyrics that are more readable
 - `saved_models` folder - models are saved/stored here in H5 format
 - `lyrics_files` folder - source lyrics files in TXT format
 
-## Service
+## `service`
 
-### LyricsGenerator
+### `LyricsGenerator` - provides logic and validations for generating lyrics using pre-trained models
 
-The `LyricsGenerator` class provides logic and validations for generating lyrics using pre-trained models:  
+- `generate_lyrics` - This method generates lyrics, using the specified seed text
+- `word_count` - Parameter specifies the total number of words to generate
+- `word_group_count` - Parameter controls the addition of commas or blank lines, alternately, after the number of specified words
 
-`generate_lyrics` - This method generates lyrics, using the specified seed text.  The `word_count` parameter specifies the total number of words to generate.  The `word_group_count` parameter will add a comma or blank line, alternately, after the number of specified words.
+#### Song Structure: the LyricsGenerator and LyricsSection classes
 
-`generate_lyrics_from_sections` - One feature that makes Xandly5 unique is the ability to generate lyrics for a specified song structure.  This is accomplished using the `LyricsSection` type. A user can specify a list of song sections, each with their own seed text, word count, etc.  
+`generate_lyrics_from_sections` - One feature that makes Xandly5 unique is the ability to generate lyrics for a specified song structure.  This is accomplished using this method of the `LyricsGenerator` class, along with the `LyricsSection` type. A user can specify a list of song sections, each with their own seed text, word count, etc.  
 
 Structured Lyrics Example:
 
 ```
 sections: List[LyricsSection] = [
     LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                    seed_text='a dreary  midnight bird and here i heard'),
+                    seed_text='a dreary midnight'),
     LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
-                    seed_text='said he art too seas for totter into'),
+                    seed_text='said he art too'),
     LyricsSection(section_type=SectionTypeEnum.VERSE, word_group_count=4, word_count=32,
-                    seed_text='tone of his eyes of night litten have'),
-    LyricsSection(section_type=SectionTypeEnum.CHORUS, word_group_count=4, word_count=16,
-                    seed_text='said he art too seas for totter into'),
+                    seed_text='tone of his eyes')
+    ...
 ```
 
-Generate text for each section is dependent on the `seed_text` value, and is dependent on text from prior sections thanks to LSTM.
+The generated text for each section is dependent on the `seed_text` value, and text from *prior sections*, thanks to LSTM.
 
-An alternate `generate_lyrics_from_independent_sections` method is also available, allow text for each section to be generated regardless of the text in other sections.
+`generate_lyrics_from_independent_sections` - This alternative method allows text for each section to be generated without being influenced by the text in other sections.
 
 ### Unit Tests
 
-A `tests` folder contains unit tests and related files to ensure text is generated consistently.  You will see different results if you generate your own H5 files rather than download the ones we provide as part of the Install process below.
+A `tests` folder contains unit tests and related files to ensure text is generated consistently.  You will see different results if you create your own H5 files rather than download the ones we provide as part of the Install process below.
 
 ## Web - REST API and UI
 
