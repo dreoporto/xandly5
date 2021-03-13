@@ -22,21 +22,21 @@ To ensure we respect copyrights, all lyrics used to train models are from public
 
 The NLP models in Xandly5 are currently Keras Sequential models with Embedding and Bidirectional Long Short-Term Memory (LSTM) layers.  This allows models to take starter text specified by the user and predict the next set of words.  The LSTM layer is a Recurrent Neural Network layer that maintains memory, so that a word later in a song is influenced by earlier words.  The bidirectional capability enhances this functionality.
 
-The modular design of Xandly5 allows us to add additional models, which can leverage other Deep Learning layers, techniques, and frameworks.  JSON config files are used throughtout the project to simplify hyperparameter configuration, as well as validation rules.
+The modular design of Xandly5 simplifies the process of adding models, which can leverage other Deep Learning layers, techniques, and frameworks.  JSON config files are used throughtout the project to streamline hyperparameter and validation configuration.
 
 ### Catalog class
 
-The Keras Tokenizer is used to create multiple N-gram sequences for each lyric line.  An example of a N-gram sequence from one line of poetry, with corresponding text:
+The Keras Tokenizer is used to create multiple N-gram sequences for each line in a set of lyrics.  Here is an example of an N-gram sequence from the first line of Poe's *The Raven*, with corresponding text:
 
 ```
-LINE: once upon a midnight dreary
+LINE: Once upon a midnight dreary, while I pondered, weak and weary,
 
 N-GRAM                          CORRESPONDING TEXT
 [1362, 27]                      once upon
 [1362, 27, 5]                   once upon a
 [1362, 27, 5, 285]              once upon a midnight
 [1362, 27, 5, 285, 1363]        once upon a midnight dreary
-
+...
 ```
 
 The tokenizer is fitted on all lyrics associated with the catalog, and then generates and pads multiple n-gram sequences for each line.  The tokenizer converts each word in the catalog to a number.  
@@ -194,7 +194,7 @@ Content-Type: application/json
 ```
 
 
-## Types
+## `types`
 
 Custom type classes are stored here to support data serialization and simplify dependencies.
 
@@ -218,7 +218,7 @@ pip install -r requirements.txt
 
 ## Conclusion
 
-Xandly5 is a proof of concept in how to leverage Natural Language Processing for the creative process.  Think of it as a spin on [Story Cubes](https://www.storycubes.com), which are incredibly fun and quite popular with writers. 🎲✍😊
+Xandly5 is an experiment in how to leverage Natural Language Processing for the creative process.  Think of it as a spin on [Story Cubes](https://www.storycubes.com), which are incredibly fun and quite popular with writers. 🎲✍😊
 
 Additional models can be included in the project, with more robust NLP techniques.  This is just one step in a journey for someone who is fascinated by the process of weaving words to create something new, perhaps useful, and hopefully good.
 
