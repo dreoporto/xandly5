@@ -7,7 +7,15 @@
 
 Xandly5 (pronounced *zand-lee-five*) is a lyrics generator powered by Natural Language Processing using the Keras and TensorFlow frameworks.  Deep Learning models are trained on separate collections of works to produce genre-specific output.
 
+Users can enter starting text, word counts and grouping to generate a new song.  
+
+For a more unique and elaborate NLP experience, Xandly5 can produce lyrics with a **user-specified song structure** with settings for each verse, chorus, bridge, etc.  Don't forget the bridge!
+
 This project is *not* an attempt to replace creative artists:  this would be impossible and, more importantly, unwanted.  Xandly5 is an experimental tool to empower individuals by providing a springboard for ideas in songwriting and poetry.
+
+<p align="center">
+    <a href="images/Xandly5-Screenshot.png"><img src="images/Xandly5-Screenshot.png" width="70%"></a>
+</p>
 
 ## Public Domain Sources
 
@@ -22,7 +30,7 @@ To ensure we respect copyrights, all lyrics used to train models are from public
 
 The NLP models in Xandly5 are currently Keras Sequential models with Embedding and Bidirectional Long Short-Term Memory (LSTM) layers.  This allows models to take starter text specified by the user and predict the next set of words.  The LSTM layer is a Recurrent Neural Network layer that maintains memory, so that a word later in a song is influenced by earlier words.  The bidirectional capability enhances this functionality.
 
-The modular design of Xandly5 simplifies the process of adding models, which can leverage other Deep Learning layers, techniques, and frameworks.  JSON config files are used throughtout the project to streamline hyperparameter and validation configuration.
+The modular design of Xandly5 simplifies the process of adding models, which can leverage other Deep Learning layers, techniques, and frameworks.  JSON config files are used throughout the project to streamline hyperparameter and validation configuration.
 
 ### Catalog class
 
@@ -113,6 +121,32 @@ sections: List[LyricsSection] = [
     ...
 ```
 
+Output:
+```
+--VERSE--
+
+a dreary midnight bird,
+  from heaven no grace 
+
+imparts no wrong sweet,
+  human being follies dews 
+
+here ashore ashore us,
+  with friendly things at 
+
+monarch's path my dark,
+  soul eye could i 
+
+--CHORUS--
+
+said he art too,
+  dwelt or the moon 
+
+abated emblems said ultimate,
+  vine burthen level robe 
+...
+```
+
 The generated text for each section is dependent on the `seed_text` value, and text from *prior sections*, thanks to LSTM.
 
 The `generate_lyrics_from_sections` method creates lyrics using a `LyricsSection` list
@@ -158,6 +192,30 @@ Content-Type: application/json
 }
 ```
 
+Response:
+```
+HTTP/1.0 200 OK
+Content-Type: text/plain; charset=utf-8
+
+tis a cook book,
+  me in your name 
+
+is still it live,
+  you see me be 
+
+so fair still praise,
+  one lies you bring 
+
+hell after they in,
+  thee one date charg'd 
+
+no effect with kings,
+  and date tell it 
+
+do in thine eyes,
+  eyes lov'st back thy 
+```
+
 #### `/structured-lyrics-api`
 ```json
 POST http://127.0.0.1:5000/structured-lyrics-api HTTP/1.1
@@ -192,6 +250,47 @@ Content-Type: application/json
     ]
 }
 ```
+Response:
+```
+HTTP/1.0 200 OK
+Content-Type: text/plain; charset=utf-8
+
+--VERSE--
+
+a dreary midnight bird,
+  and here i heard 
+
+to be you another,
+  word lenore circle flimsy 
+
+angels whose king be,
+  be therefore by each 
+
+blushing think eye lenore,
+  than lightning pleasant parian 
+
+--CHORUS--
+
+said he art too,
+  seas for totter into 
+
+comets came no soul,
+  shall driven or pleasant 
+
+--VERSE--
+
+tone of his eyes,
+  of night litten have 
+
+ever died so angels,
+  so young old sweet 
+
+spoke language dreaming your,
+  spirit flying peaceful driven 
+
+siroc hill hill yore,
+  day a flirt and 
+```
 
 
 ## `types`
@@ -204,6 +303,8 @@ Custom type classes are stored here to support data serialization and simplify d
 
 ## Installation
 
+The easiest way to get up and running is to use [Anaconda](https://www.anaconda.com/) for Python 3.  Miniconda is also an option if you prefer a bare-minimum setup. Be sure you have this installed first.
+
 To install the `xandly5` source code on your local machine:
 ```
 git clone https://github.com/dreoporto/xandly5.git
@@ -214,7 +315,16 @@ conda activate xandly5-dev
 pip install -r requirements.txt
 ```
 
+Next, install the PTMLib library in your conda environment:
+```
+pip install --no-index -f https://github.com/dreoporto/ptmlib/releases ptmlib
+```
+
 <!-- TODO ADD H5 STEPS HERE` -->
+
+## Next Steps
+
+A Web UI is in the works for Structured Lyrics.  The REST API will give you a good idea of how this will work.
 
 ## Conclusion
 
