@@ -84,11 +84,11 @@ This module contains all code and files for training and saving models, and maki
 
 - Used for both model training, and prediction (via the `LyricsGenerator` service)
 - `catalog_items` - stores all lyrics for a corpus (i.e., collection of works)
-- `generate_lyrics_text` - creates lyrics using the Catalog's associated tokenizer and related properties
+- `generate_lyrics_text` - creates lyrics using the Catalog's associated model, tokenizer and related properties
 
 ### Additional Items
-- `LyricsFormatter` - used to produce formatted lyrics that are more readable
-- `saved_models` folder - models are saved/stored here in H5 format
+- `LyricsFormatter` - used to produce formatted lyrics that are more readable, including commas and line breaks
+- `saved_models` folder - models are stored here in H5 format
 - `lyrics_files` folder - source lyrics files in TXT format
 
 ## `service`
@@ -97,7 +97,7 @@ This module provides lyrics generation logic, validations, and unit tests
 
 ### `LyricsGenerator`
 
-- Logic and validations for generating lyrics using pre-trained models
+- Logic for generating lyrics using pre-trained models, including input validations 
 - `LyricsModelEnum` init parameter specifies which model to use
 - `generate_lyrics` method creates lyrics using the specified starter text
     - `seed_text` - starter text parameter
@@ -168,8 +168,8 @@ This module includes both the Web User Interface and the Flask REST API
     - `/structured-lyrics-api` - endpoint for `generate_lyrics_from_sections` and `generate_lyrics_from_independent_sections` functionality
 - HTML5 Web UI - Bootstrap, CSS, JavaScript and jQuery
     - JavaScript + jQuery code makes calls to the Flask REST API
-    - jQuery has been used for a quick implementation
-    - A Single Page Application using Angular or React may be implemented in the future
+      - jQuery has been used for a quick implementation
+      - A Single Page Application using Angular or React may be implemented in the future
     - Important Files
         - `templates\index.html` - UI Structure
         - `scripts\xandly5.js` - JavaScript + jQuery code
@@ -314,18 +314,18 @@ Next, install the PTMLib library in your conda environment:
 pip install --no-index -f https://github.com/dreoporto/ptmlib/releases ptmlib
 ```
 
-To ensure exact word output for the unit tests, you can download saved models here:
-```
-https://github.com/dreoporto/xandly5/releases/download/v0.1.0/xandly5-saved-models.zip
-```
-Model files from the zip archive should be placed in the following directory:
+To ensure exact word output for the unit tests, download the `xandly5-saved-models.zip` archive here:
+
+- [Xandly5 Releases](https://github.com/dreoporto/xandly5/releases)
+
+Extract the saved models from the `xandly5-saved-models.zip` file and place them in the following directory:
 ```
 xandly5\xandly5\ai_ml_model\saved_models
 ```
 
 ## Next Steps
 
-A Web UI is in the works for Structured Lyrics.  The REST API will give you a good idea of how this will work.
+A Web UI is in the works for Structured Lyrics.  The REST API should give you a good idea of how this will work.
 
 ## Conclusion
 
