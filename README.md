@@ -323,6 +323,12 @@ Extract the saved models from the `xandly5-saved-models.zip` file and place them
 xandly5\xandly5\ai_ml_model\saved_models
 ```
 
+## Run Locally
+
+- Run `lyrics_api.py` to launch the Flask development server
+- Browse to `http://127.0.0.1:5000/` to view the Web UI
+- Use the REST examples above to generate lyrics
+
 ## Next Steps
 
 A Web UI is in the works for Structured Lyrics.  The REST API should give you a good idea of how this will work.
