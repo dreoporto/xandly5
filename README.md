@@ -101,7 +101,7 @@ This module provides lyrics generation logic, validations, and unit tests
 - `LyricsModelEnum` init parameter specifies which model to use
 - `generate_lyrics` method creates lyrics using the specified starter text
     - `seed_text` - starter text parameter
-    - `word_count` - total number of words to generate
+    - `word_count` - total number of words (seed text + generated text)
     - `word_group_count` - controls the addition of commas or blank lines, alternately, after the number of specified words
 
 #### Song Structure: the LyricsGenerator and LyricsSection classes

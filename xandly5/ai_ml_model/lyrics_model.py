@@ -18,6 +18,12 @@ def tensorflow_diagnostics():
 class LyricsModel:
 
     def __init__(self, config_file):
+        """
+        Trains and saves a model using Keras and TensorFlow
+
+        :param config_file: json config file with settings including hyperparameters
+        """
+
         with open(config_file) as json_file:
             self.config = json.load(json_file)
         self.catalog = Catalog()
@@ -94,6 +100,10 @@ class LyricsModel:
             lyrics_file.close()
 
     def generate_model(self):
+
+        """
+        train and save a model
+        """
 
         model = self._get_compiled_model()
         self._train_model(model)

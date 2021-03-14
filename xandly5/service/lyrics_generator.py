@@ -50,6 +50,12 @@ class LyricsGenerator:
     max_lyrics_sections = int(_config['max_lyrics_sections'])
 
     def __init__(self, model_id: LyricsModelEnum):
+        """
+        Provices logic for generating lyrics using pre-trained models, including input validations
+
+        :param model_id: model to use for word generation (LyricsModelEnum)
+        """
+
         if model_id not in _lyrics_models:
             raise ValidationError(f'Invalid Model Id: {model_id}')
         print('init LyricsGenerator instance')
@@ -83,6 +89,14 @@ class LyricsGenerator:
                                           word_count=section.word_count)
 
     def generate_lyrics(self, seed_text: str, word_group_count: int, word_count: int) -> str:
+        """
+        creates lyrics using the specified starter text
+
+        :param seed_text: starter text
+        :param word_group_count: controls the addition of commas or blank lines
+        :param word_count: total number of words to return
+        :return: seed text + generated text
+        """
         seed_text = self._clean_seed_text(seed_text)
         self._validate_lyrics_options(seed_text=seed_text, word_group_count=word_group_count, word_count=word_count)
         lyrics_text = self.model_meta.generate_lyrics_text(seed_text=seed_text, word_count=word_count)
@@ -90,6 +104,13 @@ class LyricsGenerator:
         return lyrics_text
 
     def generate_lyrics_from_independent_sections(self, lyrics_sections: List[LyricsSection]) -> str:
+        """
+        creates lyrics using a LyricsSection list; sections are *not* influenced by the text in other sections
+
+        :param lyrics_sections: list of LyricsSection
+        :return: all lyrics, formatted
+        """
+
         lyrics_text = ''
 
         self._clean_and_validate_lyrics_sections(lyrics_sections)
@@ -105,6 +126,13 @@ class LyricsGenerator:
         return lyrics_text
 
     def generate_lyrics_from_sections(self, lyrics_sections: List[LyricsSection]) -> str:
+        """
+        creates lyrics using a LyricsSection list; later sections are influenced by the text in previous sections
+
+        :param lyrics_sections:
+        :return: all lyrics, formatted
+        """
+
         lyrics_text = ''
         formatted_lyrics_text = ''
         total_word_count = 0

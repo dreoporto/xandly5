@@ -25,7 +25,7 @@ class LyricsModelMeta:
         generate lyrics using the specific catalog associated with this model
 
         :param seed_text: starting text
-        :param word_count: number of words to generate
+        :param word_count: number of words to return
         :return: seed + generated text
         """
         return self.catalog.generate_lyrics_text(self.model, seed_text, word_count)
