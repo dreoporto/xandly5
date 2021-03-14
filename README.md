@@ -61,7 +61,6 @@ Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  
 
 ## Xandly5 Architecture 
 
-<!-- TODO change link when repo is public -->
 <p align="center">
     <a href="images/Xandly5-Architecture.svg"><img src="images/Xandly5-Architecture.svg" width="90%"></a>
 </p>
