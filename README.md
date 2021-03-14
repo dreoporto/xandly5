@@ -1,15 +1,15 @@
 # Xandly5 - NLP Lyrics Generator
 
-## Applied AI for Lyrics Generation using Natural Language Processing (NLP) and Object-Oriented Python
+## Applied AI for Lyrics Generation using Natural Language Processing and Object-Oriented Python
 
 > "The next big thing is a good song." 
 > - [Brian Epstein](https://en.wikipedia.org/wiki/Brian_Epstein)
 
-Xandly5 (pronounced *zand-lee-five*) is a lyrics generator powered by Natural Language Processing using the Keras and TensorFlow frameworks.  Deep Learning models are trained on separate collections of works to produce genre-specific output.
+**Xandly5** (pronounced *zand-lee-five*) is a lyrics generator powered by Natural Language Processing (NLP) using the Keras and TensorFlow frameworks.  Deep Learning models are trained on separate collections of works to produce genre-specific output.
 
 Users can enter starting text, word counts and grouping to generate a new song.  
 
-For a more unique and elaborate NLP experience, Xandly5 can produce lyrics with a **user-specified song structure** with settings for each verse, chorus, bridge, etc.  Don't forget the bridge!
+For a more unique and elaborate NLP experience, Xandly5 can produce lyrics with a **user-specified song structure**, with settings for each verse, chorus, bridge, etc.  Don't forget the bridge!
 
 This project is *not* an attempt to replace creative artists:  this would be impossible and, more importantly, unwanted.  Xandly5 is an experimental tool to empower individuals by providing a springboard for ideas in songwriting and poetry.
 
@@ -55,7 +55,7 @@ We train models to predict the last word for each sequence (ex: *upon* in the fi
 
 ### Model Output
 
-The lyrics produced by these models can be considered imperfect yet hopefully inspirational.  They are consistent with each model genre thanks to the word predictions; sometimes they rhyme.  Xandly5 output is not random, since this would produce different results with each submission.  The same exact text input to the same model, with the same word count and grouping parameters, will produce the same output, which can then be used as a springboard for ideas.  
+The lyrics produced by these models can be considered imperfect yet hopefully inspirational.  They are consistent with each model's genre thanks to the word predictions; sometimes they rhyme.  Xandly5 output is not random, since this would produce different results with each submission.  The same exact text input to the same model, with the same word count and grouping parameters, will produce the same output, which can then be used as a springboard for ideas.  
 
 Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  Thank goodness.  Humanity needs them, now and always.  Especially now.
 
@@ -157,23 +157,23 @@ The `generate_lyrics_from_independent_sections` method creates text for each sec
 
 The `tests` folder contains unit tests and related files to ensure text is generated consistently.  
 
-IMPORTANT NOTE: You will see different results if you create your own H5 files rather than download the ones we provide in the Install process below.
+IMPORTANT NOTE: You will see different results if you train models and create your own H5 files, rather than download the ones we provide in the Install process below.
 
 ## `web`
 
 This module includes both the Web User Interface and the Flask REST API
 
 - `lyrics_api.py` - Flask REST API
-    - `/lyrics-api` - endpoint for `generate_lyrics`
-    - `/structured-lyrics-api` - endpoint for `generate_lyrics_from_sections` and `generate_lyrics_from_independent_sections`
+    - `/lyrics-api` - endpoint for `generate_lyrics` functionality
+    - `/structured-lyrics-api` - endpoint for `generate_lyrics_from_sections` and `generate_lyrics_from_independent_sections` functionality
 - HTML5 Web UI - Bootstrap, CSS, JavaScript and jQuery
-    - JavaScript and jQuery code makes calls to the Flask REST API
+    - JavaScript + jQuery code makes calls to the Flask REST API
     - jQuery has been used for a quick implementation
     - A Single Page Application using Angular or React may be implemented in the future
     - Important Files
-        - `templates\index.html`
-        - `scripts\xandly5.js`
-        - `css\style.css`
+        - `templates\index.html` - UI Structure
+        - `scripts\xandly5.js` - JavaScript + jQuery code
+        - `css\style.css` - UI Styling
 
 ### REST API Examples
 
@@ -226,22 +226,16 @@ Content-Type: application/json
     "model_id": 2,
     "independent_sections": false,
     "lyrics_sections": [{
-            "generated_text": null,
-            "section_id": null,
             "section_type": 1,
             "seed_text": "a dreary midnight bird and here i heard",
             "word_count": 32,
             "word_group_count": 4
         }, {
-            "generated_text": null,
-            "section_id": null,
             "section_type": 2,
             "seed_text": "said he art too seas for totter into",
             "word_count": 16,
             "word_group_count": 4
         }, {
-            "generated_text": null,
-            "section_id": null,
             "section_type": 1,
             "seed_text": "tone of his eyes of night litten have",
             "word_count": 32,
@@ -295,10 +289,10 @@ siroc hill hill yore,
 
 ## `types`
 
-Custom type classes are stored here to support data serialization and simplify dependencies.
+Custom type classes support data serialization and simplify dependencies.
 
-- `LyricsSection`
 - `LyricsModelMeta` - used by the `LyricsGenerator` class to store a model along with its related catalog and lyrics data on startup
+- `LyricsSection`
 - `LyricsModelEnum`
 
 ## Installation
@@ -320,7 +314,14 @@ Next, install the PTMLib library in your conda environment:
 pip install --no-index -f https://github.com/dreoporto/ptmlib/releases ptmlib
 ```
 
-<!-- TODO ADD H5 STEPS HERE` -->
+To ensure exact word output for the unit tests, you can download saved models here:
+```
+https://github.com/dreoporto/xandly5/releases/download/v0.1.0/xandly5-saved-models.zip
+```
+Model files from the zip archive should be placed in the following directory:
+```
+xandly5\xandly5\ai_ml_model\saved_models
+```
 
 ## Next Steps
 

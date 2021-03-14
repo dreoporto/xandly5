@@ -1,6 +1,7 @@
 
-# exclude saved models and sample lyrics
-saved_models/
+# exclude saved models to avoid Git bloat from storing large binaries
+*.h5
+*_new_lyrics.txt
 
 # excluding PyCharm settings
 .idea/
