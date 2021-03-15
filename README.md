@@ -73,11 +73,11 @@ This module contains all code and files for training and saving models, and maki
 
 - Trains models and saves them as H5 files
 - Specific child models currently included:
-    - `ShakespeareSonnetModel`
-    - `PoePoemModel`
+    - `shakespeare_sonnet_model.py`
+    - `poe_poem_model.py`
 - Each child model has an associated `*_config.json` with hyperparameter settings
-- Each child model can be executed to save your own custom H5 models
-- We recommend downloading the H5 models per the setup instructions below
+- Model `.py` files can be executed to save your own custom H5 models
+  - We recommend downloading the H5 models per the setup instructions below
 
 ### `Catalog`
 
@@ -86,7 +86,7 @@ This module contains all code and files for training and saving models, and maki
 - `generate_lyrics_text` - creates lyrics using the Catalog's associated model, tokenizer and related properties
 
 ### Additional Items
-- `LyricsFormatter` - used to produce formatted lyrics that are more readable, including commas and line breaks
+- `LyricsFormatter` - formats lyrics for readability, including commas and line breaks
 - `saved_models` folder - models are stored here in H5 format
 - `lyrics_files` folder - source lyrics files in TXT format
 
@@ -325,8 +325,8 @@ xandly5\xandly5\ai_ml_model\saved_models
 ## Run Locally
 
 - Run `lyrics_api.py` to launch the Flask development server
-- Browse to `http://127.0.0.1:5000/` to view the Web UI
-- Use the REST examples above to generate lyrics
+- Browse to `http://127.0.0.1:5000/` to view the Xandly5 Web UI and create lyrics
+- Use the REST examples above to create lyrics
 
 ## Next Steps
 
