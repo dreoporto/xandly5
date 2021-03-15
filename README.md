@@ -57,8 +57,6 @@ We train models to predict the last word for each sequence (ex: *upon* in the fi
 
 The lyrics produced by these models can be considered imperfect yet hopefully inspirational.  They are consistent with each model's genre thanks to the word predictions; sometimes they rhyme.  Xandly5 output is not random, since this would produce different results with each submission.  The same exact text input to the same model, with the same word count and grouping parameters, will produce the same output, which can then be used as a springboard for ideas.  
 
-Dolly Parton and her fellow songwriters will not be out of a job anytime soon.  Thank goodness.  Humanity needs them, now and always.  Especially now.
-
 ## Xandly5 Architecture 
 
 <p align="center">
@@ -226,17 +224,17 @@ Content-Type: application/json
     "independent_sections": false,
     "lyrics_sections": [{
             "section_type": 1,
-            "seed_text": "a dreary midnight bird and here i heard",
+            "seed_text": "a dreary midnight bird",
             "word_count": 32,
             "word_group_count": 4
         }, {
             "section_type": 2,
-            "seed_text": "said he art too seas for totter into",
+            "seed_text": "said he art too",
             "word_count": 16,
             "word_group_count": 4
         }, {
             "section_type": 1,
-            "seed_text": "tone of his eyes of night litten have",
+            "seed_text": "tone of his eyes",
             "word_count": 32,
             "word_group_count": 4
         }
@@ -251,38 +249,38 @@ Content-Type: text/plain; charset=utf-8
 --VERSE--
 
 a dreary midnight bird,
-  and here i heard 
+  from heaven no grace 
 
-to be you another,
-  word lenore circle flimsy 
+imparts no wrong sweet,
+  human being follies dews 
 
-angels whose king be,
-  be therefore by each 
+here ashore ashore us,
+  with friendly things at 
 
-blushing think eye lenore,
-  than lightning pleasant parian 
+monarch's path my dark,
+  soul eye could i 
 
 --CHORUS--
 
 said he art too,
-  seas for totter into 
+  dwelt or the moon 
 
-comets came no soul,
-  shall driven or pleasant 
+abated emblems said ultimate,
+  vine burthen level robe 
 
 --VERSE--
 
 tone of his eyes,
-  of night litten have 
+  moon to before no 
 
-ever died so angels,
-  so young old sweet 
+garden of a king,
+  eye stood there dreaming 
 
-spoke language dreaming your,
-  spirit flying peaceful driven 
+see dreaming pallid hair,
+  only dirges me you 
 
-siroc hill hill yore,
-  day a flirt and 
+no more dew scintillating,
+  desperate heart bird dewy 
 ```
 
 
