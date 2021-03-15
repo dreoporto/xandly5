@@ -332,7 +332,7 @@ A Web UI is in the works for Structured Lyrics.  The REST API should give you a 
 
 ## Conclusion
 
-Xandly5 is an experiment in how to leverage Natural Language Processing for the creative process.  Think of it as a spin on [Story Cubes](https://www.storycubes.com), which are incredibly fun and quite popular with writers. 🎲✍😊
+Xandly5 is an experiment in how to leverage Natural Language Processing for the creative process.
 
 Additional models can be included in the project, with more robust NLP techniques.  This is just one step in a journey for someone who is fascinated by the process of weaving words to create something new, perhaps useful, and hopefully good.
 
