@@ -4,7 +4,7 @@ matplotlib==3.3.2
 numpy==1.19.2
 pandas==1.2.1
 playsound==1.2.2
-tensorflow==2.5.1
+tensorflow~=2.5.2
 scikit-learn==0.24.1
 flask==1.1.2
 flask-restful==0.3.8
