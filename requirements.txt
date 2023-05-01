@@ -6,7 +6,7 @@ pandas==1.2.1
 playsound==1.2.2
 tensorflow~=2.5.2
 scikit-learn==0.24.1
-flask==1.1.2
+flask==2.3.2
 flask-restful==0.3.8
 flask-marshmallow==0.14.0
 marshmallow==3.10.0
