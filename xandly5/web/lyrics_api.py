@@ -71,7 +71,7 @@ class StructuredLyricsApi(Resource):
             model_id: LyricsModelEnum = LyricsModelEnum(json_values['model_id'])
             independent_sections: bool = json_values['independent_sections']
             sections = json_values['lyrics_sections']
-            lyrics_sections = sections_schema.load(sections, many=True, unknown='EXCLUDE')
+            lyrics_sections = sections_schema.load(sections, many=True, unknown='exclude')
 
             generator = LyricsGenerator(LyricsModelEnum(model_id))
             lyrics: str

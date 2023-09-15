@@ -1,12 +1,10 @@
-# This file may be used to create an environment using:
-# $ pip install -r requirements.txt
-matplotlib==3.3.2
-numpy==1.19.2
-pandas==1.2.1
-playsound==1.2.2
-tensorflow~=2.5.2
-scikit-learn==0.24.1
-flask==1.1.2
-flask-restful==0.3.8
-flask-marshmallow==0.14.0
-marshmallow==3.10.0
+matplotlib~=3.6.3
+numpy~=1.24.3
+pandas~=1.5.3
+playsound~=1.2.2
+tensorflow~=2.10.1
+scikit-learn~=1.2.1
+flask~=2.3.3
+flask-restful~=0.3.10
+flask-marshmallow~=0.15.0
+marshmallow~=3.20.1
