@@ -1,4 +1,5 @@
 import hashlib
+import os
 import re
 import unittest
 from typing import List
@@ -101,11 +102,13 @@ class LyricsGeneratorStructuredTestCase(unittest.TestCase):
 
         stopwatch.stop()
 
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+
         # ASSERT
         if self.WRITE_LYRICS_FILES:
-            with open(expected_lyrics_file, 'w') as file:
+            with open(os.path.join(current_directory, expected_lyrics_file), 'w') as file:
                 file.write(lyrics)
-        with open(expected_lyrics_file, 'r') as file:
+        with open(os.path.join(current_directory, expected_lyrics_file), 'r') as file:
             expected_lyrics = file.read()
 
         clean_lyrics = re.sub('--[A-Z]+--', '', lyrics)  # remove section headers

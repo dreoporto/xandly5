@@ -23,7 +23,7 @@ def make_error(status_code: int, message: str):
 
 
 class LyricsSectionSchema(ma.Schema):
-    section_id = fields.fields.Str(required=False, allow_none=True, missing=True)
+    section_id = fields.fields.Str(required=False, allow_none=True, load_default=True)
     section_type = fields.fields.Int()
     word_count = fields.fields.Int()
     word_group_count = fields.fields.Int()

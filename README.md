@@ -301,7 +301,7 @@ To install the `xandly5` source code on your local machine:
 git clone https://github.com/dreoporto/xandly5.git
 cd xandly5
 
-conda create -n xandly5-dev python=3.8
+conda create -n xandly5-dev python=3.10
 conda activate xandly5-dev
 pip install -r requirements.txt
 ```

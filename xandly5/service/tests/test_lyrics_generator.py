@@ -1,5 +1,6 @@
 import hashlib
 import random
+import os
 import string
 import unittest
 
@@ -104,10 +105,12 @@ class LyricsGeneratorTestCase(unittest.TestCase):
         # ASSERT
         clean_lyrics = lyrics.strip().replace('  ', ' ').replace(',', '')  # removes unnecessary chars
 
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+
         if self.WRITE_LYRICS_FILES:
-            with open(expected_lyrics_file, 'w') as file:
+            with open(os.path.join(current_directory, expected_lyrics_file), 'w') as file:
                 file.write(lyrics)
-        with open(expected_lyrics_file, 'r') as file:
+        with open(os.path.join(current_directory, expected_lyrics_file), 'r') as file:
             expected_lyrics = file.read()
         self.assertEqual(word_count, len(clean_lyrics.split(' ')))
         self.assertTrue(lyrics.startswith(starts_with_text))
