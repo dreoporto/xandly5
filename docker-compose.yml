@@ -1,0 +1,22 @@
+name: xandly5
+services:
+  tensorflow-gpu:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    tty: true
+    volumes:
+      - ./xandly5/:/app/xandly5
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    ports:
+        - "$FLASK_PORT:$FLASK_PORT"
+    env_file:
+     - ./.env
+    entrypoint: python xandly5/web/lyrics_api.py
+    

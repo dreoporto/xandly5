@@ -100,4 +100,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)  # enabling debug causes CUDNN errors
+    app.run(debug=False, host='0.0.0.0')  # enabling debug causes CUDNN errors
