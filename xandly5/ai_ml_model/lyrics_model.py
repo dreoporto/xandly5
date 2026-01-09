@@ -11,8 +11,8 @@ from lyrics_formatter import LyricsFormatter
 
 
 def tensorflow_diagnostics():
-    print('tf version:', tf.__version__)
-    print('keras version:', keras.__version__)
+    print('TF VERSION:', tf.__version__)
+    print('TF PHYSICAL_DEVICES:', tf.config.list_physical_devices())
 
 
 class LyricsModel:
