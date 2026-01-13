@@ -311,6 +311,8 @@ Next, install the PTMLib library in your conda environment:
 pip install --no-index -f https://github.com/dreoporto/ptmlib/releases ptmlib
 ```
 
+### Download Saved Models
+
 To ensure exact word output for the unit tests, download the `xandly5-saved-models.zip` archive here:
 
 - [Xandly5 Releases](https://github.com/dreoporto/xandly5/releases)
@@ -326,9 +328,21 @@ xandly5\xandly5\ai_ml_model\saved_models
 - Browse to `http://127.0.0.1:5000/` to view the Xandly5 Web UI and create lyrics
 - Use the REST examples above to create lyrics
 
-## Next Steps
+## Run with Docker
 
-A Web UI is in the works for Structured Lyrics.  The REST API should give you a good idea of how this will work.
+```
+git clone https://github.com/dreoporto/xandly5.git
+cd xandly5
+```
+
+- Follow the [steps above](#download-saved-models) to download the `xandly5-saved-models.zip` file and place the saved models it contains
+
+```
+docker compose up -d
+```
+
+- Browse to `http://127.0.0.1:5000/` to view the Xandly5 Web UI and create lyrics
+- Use the REST examples above to create lyrics
 
 ## Conclusion
 
