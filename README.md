@@ -176,24 +176,20 @@ This module includes both the Web User Interface and the Flask REST API
 
 #### `/lyrics-api`
 
-```json
-POST http://127.0.0.1:5000/lyrics-api HTTP/1.1
-Host: 127.0.0.1:5000
-Content-Type: application/json
-
-{
+```bash
+curl -v --location 'http://127.0.0.1:5000/lyrics-api' \
+--header 'Content-Type: application/json' \
+--data-raw '{
     "model_id": 1,
     "seed_text": "tis a cook book",
     "word_count": 48,
     "word_group_count": 4
-}
+}'
 ```
 
 Response:
-```
-HTTP/1.0 200 OK
-Content-Type: text/plain; charset=utf-8
 
+```
 tis a cook book,
   me in your name 
 
@@ -214,12 +210,11 @@ do in thine eyes,
 ```
 
 #### `/structured-lyrics-api`
-```json
-POST http://127.0.0.1:5000/structured-lyrics-api HTTP/1.1
-Host: 127.0.0.1:5000
-Content-Type: application/json
 
-{
+```bash
+curl -v --location 'http://127.0.0.1:5000/structured-lyrics-api' \
+--header 'Content-Type: application/json' \
+--data-raw '{
     "model_id": 2,
     "independent_sections": false,
     "lyrics_sections": [{
@@ -239,13 +234,12 @@ Content-Type: application/json
             "word_group_count": 4
         }
     ]
-}
+}'
 ```
-Response:
-```
-HTTP/1.0 200 OK
-Content-Type: text/plain; charset=utf-8
 
+Response:
+
+```
 --VERSE--
 
 a dreary midnight bird,
